@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import { Client, Events, EmbedBuilder, GatewayIntentBits, SlashCommandBuilder } from "discord.js";
 import { config } from "dotenv";
 config();
 
