@@ -1,11 +1,23 @@
 import { readdirSync } from "fs";
 import { join } from "path";
 
-module.exports = (directory, foldersOnly = false) => {
+export default (directory, foldersOnly = false) => {
   let fileNames = [];
   const files = readdirSync(directory, { withFileTypes: true });
 
   for (const file of files) {
     const filePath = join(directory, file);
+
+    if (foldersOnly) {
+      if (file.isDirectory()) {
+        fileNames.push(filePath);
+      } else {
+        if (file.isFile()) {
+          fileNames.push(filePath);
+        }
+      }
+    }
   }
+
+  return fileNames;
 };

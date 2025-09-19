@@ -7,7 +7,7 @@ import {
   PermissionsBitField,
 } from "discord.js";
 import { config } from "dotenv";
-import eventHandler from "./handlers/eventHandler";
+import eventHandler from "./handlers/eventHandler.js";
 config();
 
 const token = process.env.BOT_TOKEN_KEY;
@@ -47,25 +47,39 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 const commands = [
   new SlashCommandBuilder()
-    .setName('ban')
-    .setDescription('Bannir un membre du serveur')
-    .addUserOption(option =>
-      option.setName('membre')
-        .setDescription('Le membre à bannir')
-        .setRequired(true))
-    .addStringOption(option =>
-      option.setName('raison')
-        .setDescription('Raison du ban')
-        .setRequired(false))
+    .setName("ban")
+    .setDescription("Bannir un membre du serveur")
+    .addUserOption((option) =>
+      option
+        .setName("membre")
+        .setDescription("Le membre à bannir")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("raison")
+        .setDescription("Raison du ban")
+        .setRequired(false)
+    )
     .toJSON(),
 ];
 
-client.on(Events.InteractionCreate, async(interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName == 'ban'){
-    if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)){
-      return interaction.reply({content : "❌ Tu n'as pas la permission de bannir des membres.", ephemeral : true})
-    }
+client.on("ready", (readyCLient) => {
+  console.log(`Logged in as ${readyCLient.user.tag}`);
+});
 
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName == "ban") {
+    if (
+      !interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)
+    ) {
+      return interaction.reply({
+        content: "❌ Tu n'as pas la permission de bannir des membres.",
+        ephemeral: true,
+      });
+    }
   }
-})
+});
+
+client.login(token);
