@@ -1,4 +1,10 @@
-import { Client, Events, EmbedBuilder, GatewayIntentBits, SlashCommandBuilder } from "discord.js";
+import {
+  Client,
+  Events,
+  EmbedBuilder,
+  GatewayIntentBits,
+  SlashCommandBuilder,
+} from "discord.js";
 import { config } from "dotenv";
 config();
 
@@ -20,31 +26,14 @@ const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
   .setTitle("Title")
   .setDescription("Ceci est une description courte.")
-  .setAuthor("Raf | Admin")
+  .setAuthor({ name: "Raf | Admin" })
   .setFooter({ text: "Test" });
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return;
   if (message.content === "/ping") {
-    message.reply(testEmbed);
+    message.channel.send({ embeds: [testEmbed] });
   }
 });
 
 client.login(token);
-
-const commandeNeedHelp = [
-    new SlashCommandBuilder()
-    .setName('needhelp')
-    .setDescription('Obtenir de l aide pour ouvrir un ticket')
-    .toJSON()
-]
-client.on("messageCreate", async interaction => {
-  console.log("Detection")
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'needhelp') {
-    await interaction.reply({
-      content: '📩 Je vous invite à vous diriger vers le salon **#ticket** pour ouvrir un ticket.',
-    });
-  }
-});
