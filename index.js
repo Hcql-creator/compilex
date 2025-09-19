@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits, SlashCommandBuilder } from "discord.js";
+import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "dotenv";
 config();
 
@@ -13,13 +13,20 @@ const client = new Client({
 });
 
 client.once(Events.ClientReady, (readyCLient) => {
-  console.log(`Logged in as ${readyCLient.user.tag}`);
+  console.log(`Logged emin as ${readyCLient.user.tag}`);
 });
+
+const testEmbed = new EmbedBuilder()
+  .setColor("FFFFFF")
+  .setTitle("Title")
+  .setDescription("Ceci est une description courte.")
+  .setAuthor("Raf | Admin")
+  .setFooter({ text: "Test" });
 
 client.on("messageCreate", (message) => {
   if (message.author.bot) return;
   if (message.content === "/ping") {
-    message.reply("Pong");
+    message.reply(testEmbed);
   }
 });
 
