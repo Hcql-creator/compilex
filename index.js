@@ -1,4 +1,4 @@
-import { Client, Events, GatewayIntentBits } from "discord.js";
+import { Client, Events, GatewayIntentBits, SlashCommandBuilder } from "discord.js";
 import { config } from "dotenv";
 config();
 
@@ -24,3 +24,20 @@ client.on("messageCreate", (message) => {
 });
 
 client.login(token);
+
+const commandeNeedHelp = [
+    new SlashCommandBuilder()
+    .setName('needhelp')
+    .setDescription('Obtenir de l aide pour ouvrir un ticket')
+    .toJSON()
+]
+client.on("messageCreate", async interaction => {
+  console.log("Detection")
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'needhelp') {
+    await interaction.reply({
+      content: '📩 Je vous invite à vous diriger vers le salon **#ticket** pour ouvrir un ticket.',
+    });
+  }
+});
