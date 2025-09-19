@@ -7,6 +7,7 @@ import {
   PermissionsBitField,
 } from "discord.js";
 import { config } from "dotenv";
+import eventHandler from "./handlers/eventHandler";
 config();
 
 const token = process.env.BOT_TOKEN_KEY;
@@ -19,9 +20,7 @@ const client = new Client({
   ],
 });
 
-client.once(Events.ClientReady, (readyCLient) => {
-  console.log(`Logged emin as ${readyCLient.user.tag}`);
-});
+eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
