@@ -36,4 +36,14 @@ client.on("messageCreate", (message) => {
   }
 });
 
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+  if (interaction.commandName === "needhelp") {
+    await interaction.reply({
+      content: `📩 Direction le salon <#1418547344177102960> pour ouvrir un ticket.`,
+      ephemeral: true,
+    });
+  }
+});
+
 client.login(token);
