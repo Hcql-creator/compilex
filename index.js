@@ -1,20 +1,26 @@
-import {
-  Client,
-  Events,
-  GatewayIntentBits,
-  SlashCommandBuilder,
-} from "discord.js";
+import { Client, Events, GatewayIntentBits } from "discord.js";
 import { config } from "dotenv";
 config();
 
 const token = process.env.BOT_TOKEN_KEY;
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
 
 client.once(Events.ClientReady, (readyCLient) => {
   console.log(`Logged in as ${readyCLient.user.tag}`);
 });
 
-client.login(token);
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+  if (message.content === "/ping") {
+    message.reply("Test");
+  }
+});
 
-new SlashCommandBuilder().setName("ping").setDescription("Repkies with Pong!");
+client.login(token);
