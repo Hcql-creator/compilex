@@ -127,7 +127,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
                     allow: [
                         PermissionsBitField.Flags.ViewChannel,
                         PermissionsBitField.Flags.SendMessages,
-                        PermissionsBitField.Flags.ReadMessageHistory
+                        PermissionsBitField.Flags.ReadMessageHistory,
+                        PermissionsBitField.Flags.ManageChannels
                     ],
                 },
                 ...interaction.guild.members.cache
@@ -137,7 +138,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
                         allow: [
                             PermissionsBitField.Flags.ViewChannel,
                             PermissionsBitField.Flags.SendMessages,
-                            PermissionsBitField.Flags.ReadMessageHistory
+                            PermissionsBitField.Flags.ReadMessageHistory,
+                            PermissionsBitField.Flags.ManageChannels
+
                         ],
                     }))
             ],
