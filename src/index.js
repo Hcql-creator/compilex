@@ -26,7 +26,7 @@ eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
-  .setTitle("Test commande /pingpong")
+  .setTitle("Test commande /pongping")
   .setDescription(
     "Ceci est une Rafael va Ceci est un message de test a la commande /ping"
   )
