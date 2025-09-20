@@ -50,45 +50,67 @@ const commands = [
   new SlashCommandBuilder()
     .setName('ban')
     .setDescription('Bannir un membre du serveur')
-    .addUserOption(option =>
-      option.setName('membre')
-        .setDescription('Le membre à bannir')
-        .setRequired(true))
-    .addStringOption(option =>
-      option.setName('raison')
-        .setDescription('Raison du ban')
-        .setRequired(false))
+    .addUserOption((option) =>
+      option.setName('membre').setDescription('Le membre à bannir').setRequired(true)
+    )
+    .addStringOption((option) =>
+      option.setName('raison').setDescription('Raison du bannissement').setRequired(false)
+    )
     .toJSON(),
 ];
 
-client.on(Events.InteractionCreate, async(interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName == 'ban'){
-    if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)){
-      return interaction.reply({content : "❌ Tu n'as pas la permission de bannir des membres.", ephemeral : true})
-    }
-    const member = interaction.options.getUser('membre');
-    const reason = interaction.options.getString('raison') || 'Aucune raison spécifiée';
-  
-    const guildMember = interaction.guild.members.cache.get(member.id);
-    if (!guildMember){
-      return interaction.reply({ content: "❌ Membre introuvable sur ce serveur.", ephemeral: true });
-    }
-    if (member.id === interaction.user.id) {
-      return interaction.reply({ content: "❌ Tu ne peux pas te bannir toi-même.", ephemeral: true });
-    }
-     if (member.id === client.user.id) {
-      return interaction.reply({ content: "❌ Je ne peux pas me bannir moi-même.", ephemeral: true });
-    }
-    if (!guildMember.bannable) {
-      return interaction.reply({ content: "❌ Je ne peux pas bannir ce membre.", ephemeral: true });
-    }
-    try {
-      await guildMember.ban({ reason });
-      await interaction.reply({ content: `✅ ${member.tag} a été banni.\nRaison : ${reason}` });
-    } catch (error) {
-      console.error(error);
-      interaction.reply({ content: "❌ Une erreur est survenue lors du ban.", ephemeral: true });
-    }
+// Enregistrement de la commande slash dans un serveur spécifique
+const rest = new REST({ version: '10' }).setToken(token);
+
+(async () => {
+  try {
+    console.log('🔁 Enregistrement de la commande /ban...');
+    await rest.put(
+      Routes.applicationGuildCommands(clientId, guildId),
+      { body: commands }
+    );
+    console.log('✅ Commande /ban enregistrée avec succès.');
+  } catch (error) {
+    console.error('❌ Erreur lors de l\'enregistrement de la commande :', error);
   }
-})
+})();
+
+// Quand le bot est prêt
+client.once(Events.ClientReady, () => {
+  console.log(`✅ Connecté en tant que ${client.user.tag}`);
+});
+
+// Interaction (slash command)
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'ban') {
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+      return interaction.reply({
+        content: '❌ Tu n\'as pas la permission de bannir des membres.',
+        ephemeral: true,
+      });
+    }
+
+    const user = interaction.options.getUser('membre');
+    const reason = interaction.options.getString('raison') || 'Aucune raison spécifiée';
+
+    const member = await interaction.guild.members.fetch(user.id).catch(() => null);
+
+    if (!member) {
+      return interaction.reply({
+        content: '❌ Ce membre n\'est pas présent sur ce serveur.',
+        ephemeral: true,
+      });
+    }
+
+    if (!member.bannable) {
+      return interaction.reply({
+        content: '❌ Je ne peux pas bannir ce membre (rôle trop élevé ?).',
+        ephemeral: true,
+      });
+    }
+
+    try {
+      await member.ban({ reason });
+      await intera
