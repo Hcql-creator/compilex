@@ -79,4 +79,6 @@ client.on(Events.InteractionCreate, async interaction => {
     }
   }
 })
+
+
 client.login(token)
