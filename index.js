@@ -7,7 +7,9 @@ import {
   PermissionsBitField,
 } from "discord.js";
 import { config } from "dotenv";
+import eventHandler from "./handlers/eventHandler.js";
 config();
+import { REST, Routes } from 'discord.js';
 
 const token = process.env.BOT_TOKEN_KEY;
 
@@ -16,18 +18,17 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMembers,
   ],
 });
 
-client.once(Events.ClientReady, (readyCLient) => {
-  console.log(`Logged emin as ${readyCLient.user.tag}`);
-});
+eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
-  .setTitle("Title")
-  .setDescription("Ceci est une description courte.")
-  .setAuthor({ name: "Raf | Admin" })
+  .setTitle("Test commande /ping")
+  .setDescription("Ceci est une Rafael va Ceci est un message de test a la commande /ping")
+  .setAuthor({ name: "Raf | le goat supprime pas le tocken stp" })
   .setFooter({ text: "Test" });
 
 client.on("messageCreate", (message) => {
@@ -37,80 +38,94 @@ client.on("messageCreate", (message) => {
   }
 });
 
-client.on(Events.InteractionCreate, async (interaction) => {
+
+client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
-  if (interaction.commandName === "needhelp") {
+  if (interaction.commandName === 'needhelp') {
     await interaction.reply({
       content: `📩 Direction le salon <#1418547344177102960> pour obtenir de l'aide.`,
     });
   }
-});
 
-const commands = [
-  new SlashCommandBuilder()
-    .setName('ban')
-    .setDescription('Bannir un membre du serveur')
-    .addUserOption((option) =>
-      option.setName('membre').setDescription('Le membre à bannir').setRequired(true)
-    )
-    .addStringOption((option) =>
-      option.setName('raison').setDescription('Raison du bannissement').setRequired(false)
-    )
-    .toJSON(),
-];
-
-// Enregistrement de la commande slash dans un serveur spécifique
-const rest = new REST({ version: '10' }).setToken(token);
-
-(async () => {
-  try {
-    console.log('🔁 Enregistrement de la commande /ban...');
-    await rest.put(
-      Routes.applicationGuildCommands(clientId, guildId),
-      { body: commands }
-    );
-    console.log('✅ Commande /ban enregistrée avec succès.');
-  } catch (error) {
-    console.error('❌ Erreur lors de l\'enregistrement de la commande :', error);
-  }
-})();
-
-// Quand le bot est prêt
-client.once(Events.ClientReady, () => {
-  console.log(`✅ Connecté en tant que ${client.user.tag}`);
-});
-
-// Interaction (slash command)
-client.on(Events.InteractionCreate, async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'ban') {
-    if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
-      return interaction.reply({
-        content: '❌ Tu n\'as pas la permission de bannir des membres.',
-        ephemeral: true,
-      });
+  if (interaction.commandName == 'ban'){
+    if (!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)){
+      return interaction.reply({content : "❌ Tu n'as pas la permission de bannir des membres.", ephemeral : true})
     }
-
-    const user = interaction.options.getUser('membre');
+    const member = interaction.options.getUser('membre');
     const reason = interaction.options.getString('raison') || 'Aucune raison spécifiée';
-
-    const member = await interaction.guild.members.fetch(user.id).catch(() => null);
-
-    if (!member) {
-      return interaction.reply({
-        content: '❌ Ce membre n\'est pas présent sur ce serveur.',
-        ephemeral: true,
-      });
+  
+    const guildMember = interaction.guild.members.cache.get(member.id);
+    if (!guildMember){
+      return interaction.reply({ content: "❌ Membre introuvable sur ce serveur.", ephemeral: true });
     }
-
-    if (!member.bannable) {
-      return interaction.reply({
-        content: '❌ Je ne peux pas bannir ce membre (rôle trop élevé ?).',
-        ephemeral: true,
-      });
+   if (member.id === interaction.user.id) {
+  return interaction.reply({
+    content: "❌ Tu ne peux pas te bannir toi-même, champion 🤨",
+    ephemeral: true,
+  });
+}
+     if (member.id === client.user.id) {
+      return interaction.reply({ content: "❌ Je ne peux pas me bannir moi-même.", ephemeral: true });
     }
-
+    if (!guildMember.bannable) {
+      return interaction.reply({ content: "❌ Je ne peux pas bannir ce membre.", ephemeral: true });
+    }
     try {
-      await member.ban({ reason });
-      await intera
+      await guildMember.ban({ reason });
+      await interaction.reply({ content: `✅ ${member.tag} a été banni.\nRaison : ${reason}` });
+    } catch (error) {
+      console.error(error);
+      interaction.reply({ content: "❌ Une erreur est survenue lors du ban.", ephemeral: true });
+    }
+  }
+    if (interaction.commandName === 'ticket') {
+        const tickets = interaction.guild.channels.cache
+            .filter(c => c.name.startsWith('ticket'))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        let newTicketNumber = 1;
+        if (tickets.size > 0) {
+            const lastTicket = tickets.first().name;
+            const match = lastTicket.match(/ticket(\d+)/);
+            if (match) newTicketNumber = parseInt(match[1]) + 1;
+        }
+
+        const ticketName = `ticket${String(newTicketNumber).padStart(3, '0')}`;
+
+        const channel = await interaction.guild.channels.create({
+            name: ticketName,
+            type: 0,
+            permissionOverwrites: [
+                {
+                    id: interaction.guild.id,
+                    deny: [PermissionsBitField.Flags.ViewChannel],
+                },
+                {
+                    id: interaction.user.id,
+                    allow: [
+                        PermissionsBitField.Flags.ViewChannel,
+                        PermissionsBitField.Flags.SendMessages,
+                        PermissionsBitField.Flags.ReadMessageHistory,
+                        PermissionsBitField.Flags.ManageChannels
+                    ],
+                },
+                ...interaction.guild.members.cache
+                    .filter(member => member.permissions.has(PermissionsBitField.Flags.Administrator))
+                    .map(admin => ({
+                        id: admin.id,
+                        allow: [
+                            PermissionsBitField.Flags.ViewChannel,
+                            PermissionsBitField.Flags.SendMessages,
+                            PermissionsBitField.Flags.ReadMessageHistory,
+                            PermissionsBitField.Flags.ManageChannels
+                        ],
+                    }))
+            ],
+        });
+
+        await interaction.reply({ content: `Ticket créé : ${channel}`, ephemeral: true });
+    }
+});
+
+
+client.login(token)
