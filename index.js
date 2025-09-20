@@ -7,11 +7,11 @@ import {
   PermissionsBitField,
 } from "discord.js";
 import { config } from "dotenv";
-import eventHandler from "./handlers/eventHandler.js";
+
 config();
 import { REST, Routes } from "discord.js";
 
-const token = process.env.BOT_TOKEN_KEY;
+const token = process.env.NOLAN_BOT_TOKEN_KEY;
 
 const client = new Client({
   intents: [
@@ -22,7 +22,6 @@ const client = new Client({
   ],
 });
 
-eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
@@ -99,6 +98,53 @@ client.on(Events.InteractionCreate, async (interaction) => {
       });
     }
   }
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === 'ticket') {
+        const tickets = interaction.guild.channels.cache
+            .filter(c => c.name.startsWith('ticket'))
+            .sort((a, b) => b.name.localeCompare(a.name));
+
+        let newTicketNumber = 1;
+        if (tickets.size > 0) {
+            const lastTicket = tickets.first().name;
+            const match = lastTicket.match(/ticket(\d+)/);
+            if (match) newTicketNumber = parseInt(match[1]) + 1;
+        }
+
+        const ticketName = `ticket${String(newTicketNumber).padStart(3, '0')}`;
+
+        const channel = await interaction.guild.channels.create({
+            name: ticketName,
+            type: 0,
+            permissionOverwrites: [
+                {
+                    id: interaction.guild.id,
+                    deny: [PermissionsBitField.Flags.ViewChannel],
+                },
+                {
+                    id: interaction.user.id,
+                    allow: [
+                        PermissionsBitField.Flags.ViewChannel,
+                        PermissionsBitField.Flags.SendMessages,
+                        PermissionsBitField.Flags.ReadMessageHistory
+                    ],
+                },
+                ...interaction.guild.members.cache
+                    .filter(member => member.permissions.has(PermissionsBitField.Flags.Administrator))
+                    .map(admin => ({
+                        id: admin.id,
+                        allow: [
+                            PermissionsBitField.Flags.ViewChannel,
+                            PermissionsBitField.Flags.SendMessages,
+                            PermissionsBitField.Flags.ReadMessageHistory
+                        ],
+                    }))
+            ],
+        });
+
+        await interaction.reply({ content: `Ticket créé : ${channel}`, ephemeral: true });
+    }
 });
 
 client.login(token);
