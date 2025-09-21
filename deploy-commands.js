@@ -9,17 +9,28 @@ const commands = [
   new SlashCommandBuilder()
   .setName('ticket')
   .setDescription('Ouvre un ticket.')
-  .toJSON()
+  .toJSON(),
+  new SlashCommandBuilder()
+    .setName('ban')
+    .setDescription('Bannir un utilisateur du serveur')
+    .addUserOption(option =>
+        option.setName('utilisateur')
+            .setDescription("L'utilisateur à bannir")
+            .setRequired(true))
+    .addStringOption(option =>
+        option.setName('raison')
+            .setDescription('La raison du bannissement')
+            .setRequired(false))
 ];
   
 
-const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN_KEY);
+const rest = new REST({ version: '10' }).setToken(process.env.NOLAN_BOT_TOKEN_KEY);
 
 (async () => {
     try {
         console.log('Enregistrement des commandes...');
         await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            Routes.applicationGuildCommands(process.env.CLIENT_ID_NOLAN, process.env.GUILD_ID),
             { body: commands }
         );
         console.log('Commandes enregistrées !');
@@ -27,4 +38,3 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN_KEY);
         console.error(error);
     }
 })();
-
