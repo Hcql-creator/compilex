@@ -7,11 +7,10 @@ import {
   PermissionsBitField,
 } from "discord.js";
 import { config } from "dotenv";
-import eventHandler from "./handlers/eventHandler.js";
-config();
-import { REST, Routes } from "discord.js";
 
-const token = process.env.BOT_TOKEN_KEY;
+config();
+
+const token = process.env.PROD_BOT_TOKEN_KEY;
 
 const client = new Client({
   intents: [
@@ -22,7 +21,7 @@ const client = new Client({
   ],
 });
 
-eventHandler(client);
+// eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
