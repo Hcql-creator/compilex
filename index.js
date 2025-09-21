@@ -21,8 +21,6 @@ const client = new Client({
   ],
 });
 
-eventHandler(client);
-
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
   .setTitle("Test commande /pongping")
