@@ -27,3 +27,4 @@ const rest = new REST({ version: '10' }).setToken(process.env.BOT_TOKEN_KEY);
         console.error(error);
     }
 })();
+
