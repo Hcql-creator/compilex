@@ -21,7 +21,7 @@ const client = new Client({
   ],
 });
 
-// eventHandler(client);
+eventHandler(client);
 
 const testEmbed = new EmbedBuilder()
   .setColor("FFFFFF")
@@ -97,6 +97,60 @@ client.on(Events.InteractionCreate, async (interaction) => {
         ephemeral: true,
       });
     }
+  }
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === "ticket") {
+    const tickets = interaction.guild.channels.cache
+      .filter((c) => c.name.startsWith("ticket"))
+      .sort((a, b) => b.name.localeCompare(a.name));
+
+    let newTicketNumber = 1;
+    if (tickets.size > 0) {
+      const lastTicket = tickets.first().name;
+      const match = lastTicket.match(/ticket(\d+)/);
+      if (match) newTicketNumber = parseInt(match[1]) + 1;
+    }
+
+    const ticketName = `ticket${String(newTicketNumber).padStart(3, "0")}`;
+
+    const channel = await interaction.guild.channels.create({
+      name: ticketName,
+      type: 0,
+      permissionOverwrites: [
+        {
+          id: interaction.guild.id,
+          deny: [PermissionsBitField.Flags.ViewChannel],
+        },
+        {
+          id: interaction.user.id,
+          allow: [
+            PermissionsBitField.Flags.ViewChannel,
+            PermissionsBitField.Flags.SendMessages,
+            PermissionsBitField.Flags.ReadMessageHistory,
+            PermissionsBitField.Flags.ManageChannels,
+          ],
+        },
+        ...interaction.guild.members.cache
+          .filter((member) =>
+            member.permissions.has(PermissionsBitField.Flags.Administrator)
+          )
+          .map((admin) => ({
+            id: admin.id,
+            allow: [
+              PermissionsBitField.Flags.ViewChannel,
+              PermissionsBitField.Flags.SendMessages,
+              PermissionsBitField.Flags.ReadMessageHistory,
+              PermissionsBitField.Flags.ManageChannels,
+            ],
+          })),
+      ],
+    });
+
+    await interaction.reply({
+      content: `Ticket créé : ${channel}`,
+      ephemeral: true,
+    });
   }
 });
 
