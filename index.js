@@ -197,6 +197,35 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
     }
 
+    if (interaction.commandName === "couleur"){
+      const couleur = interaction.options.getString('couleur')
+      const texte = interaction.options.getString('message') || "Message vide";
+      if (!texte) {
+      return interaction.reply({
+        content: "❌ Vous devez fournir un message à envoyer.",
+        ephemeral: true
+      });
+    }
+      let couleurHex;
+      switch(couleur) {
+      case "red": couleurHex = 0xFF0000; break;
+      case "blue": couleurHex = 0x0000FF; break;
+      case "green": couleurHex = 0x00FF00; break;
+      case "yellow": couleurHex = 0xFFFF00; break;
+      case "black": couleurHex = 0x000000; break;
+      case "white": couleurHex = 0xFFFFFF; break;
+      case "purple": couleurHex = 0x800080; break;
+      case "pink": couleurHex = 0xDE3163; break;
+      case "brown": couleurHex = 0x4B371C; break;
+      default: couleurHex = 0xFFFFFF; // blanc par défaut
+    }
+
+    const embed = new EmbedBuilder()
+      .setDescription(texte)
+      .setColor(couleurHex);
+      await interaction.reply({ embeds: [embed] });
+  }
+    
 });
 
 client.login(token);

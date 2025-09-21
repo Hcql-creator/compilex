@@ -28,7 +28,7 @@ const commands = [
     option
       .setName("membre")
       .setDescription("Le membre à mute")
-      .setRequired(true) // ← très important
+      .setRequired(true)
   )
   .addIntegerOption(option => 
     option
@@ -41,7 +41,29 @@ const commands = [
       .setName("raison")
       .setDescription("Raison du mute")
       .setRequired(false)
-  )
+  ),
+   new SlashCommandBuilder()
+    .setName('couleur')
+    .setDescription('Change la couleur de votre texte')
+    .addStringOption(option =>
+      option.setName('couleur')
+        .setDescription('Choisissez une couleur')
+        .setRequired(true)
+        .addChoices(
+          { name: 'Rouge', value: 'red' },
+          { name: 'Bleu', value: 'blue' },
+          { name: 'Vert', value: 'green' },
+          { name: 'Jaune', value: 'yellow' },
+          { name: 'Noir', value: 'black' },
+          { name: 'Blanc', value: 'white' },
+          { name: 'Violet', value: 'purple' },
+          { name: 'Rose', value: 'pink' },
+          { name: 'Marron', value: 'brown' },
+        ))
+    .addStringOption(option =>
+      option.setName('message')
+        .setDescription('Le message à envoyer')
+        .setRequired(true))
 ];
   
 
