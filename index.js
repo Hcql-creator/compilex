@@ -46,8 +46,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       content: `📩 Direction le salon <#1418547344177102960> pour obtenir de l'aide.`,
     });
   }
-
-  if (interaction.commandName == "ban") {
+// BAN
+  if (interaction.commandName === "ban") {
     if (
       !interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)
     ) {
@@ -56,7 +56,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         ephemeral: true,
       });
     }
-    const member = interaction.options.getUser("membre");
+    const member = interaction.options.getUser('utilisateur');
     const reason =
       interaction.options.getString("raison") || "Aucune raison spécifiée";
 
@@ -98,8 +98,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
       });
     }
   }
-    if (!interaction.isChatInputCommand()) return;
-
     if (interaction.commandName === 'ticket') {
         const tickets = interaction.guild.channels.cache
             .filter(c => c.name.startsWith('ticket'))
@@ -148,6 +146,57 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
         await interaction.reply({ content: `Ticket créé : ${channel}`, ephemeral: true });
     }
+    if (interaction.commandName === "mute"){
+      if (!interaction.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
+    return interaction.reply({
+      content: "❌ Tu n'as pas la permission de mute des membres.",
+      ephemeral: true
+    });
+  }
+
+  // Récupérer le membre à mute
+  const guildMember = interaction.options.getMember("membre");
+  if (!guildMember) {
+    return interaction.reply({
+      content: "❌ Membre introuvable sur le serveur.",
+      ephemeral: true
+    });
+  }
+
+  // Vérifier que le membre peut être muté
+  if (!guildMember.moderatable) {
+    return interaction.reply({
+      content: "❌ Je ne peux pas mute ce membre (hiérarchie ou permissions).",
+      ephemeral: true
+    });
+  }
+
+  // Vérifier la durée
+  const duree = interaction.options.getInteger("duree");
+  if (!duree || duree <= 0) {
+    return interaction.reply({
+      content: "❌ Tu dois indiquer une durée valide en minutes.",
+      ephemeral: true
+    });
+  }
+
+  const reason = interaction.options.getString("raison") || "Aucune raison spécifiée";
+
+  try {
+    await guildMember.timeout(duree * 60 * 1000, reason); // timeout en ms
+    return interaction.reply({
+      content: `✅ ${guildMember.user.tag} a été mute pendant ${duree} minutes.\nRaison : ${reason}`,
+      ephemeral: false
+    });
+  } catch (error) {
+    console.error(error);
+    return interaction.reply({
+      content: "❌ Une erreur est survenue lors du mute.",
+      ephemeral: true
+    });
+  }
+    }
+
 });
 
 client.login(token);

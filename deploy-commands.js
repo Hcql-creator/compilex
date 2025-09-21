@@ -20,7 +20,28 @@ const commands = [
     .addStringOption(option =>
         option.setName('raison')
             .setDescription('La raison du bannissement')
-            .setRequired(false))
+            .setRequired(false)),
+  new SlashCommandBuilder()
+    .setName("mute")
+  .setDescription("Mute un membre")
+  .addUserOption(option => 
+    option
+      .setName("membre")
+      .setDescription("Le membre à mute")
+      .setRequired(true) // ← très important
+  )
+  .addIntegerOption(option => 
+    option
+      .setName("duree")
+      .setDescription("Durée en minutes")
+      .setRequired(true)
+  )
+  .addStringOption(option => 
+    option
+      .setName("raison")
+      .setDescription("Raison du mute")
+      .setRequired(false)
+  )
 ];
   
 
