@@ -10,7 +10,7 @@ import { config } from "dotenv";
 
 config();
 
-const token = process.env.PROD_BOT_TOKEN_KEY;
+const token = process.env.NOLAN_BOT_TOKEN_KEY;
 
 const client = new Client({
   intents: [
