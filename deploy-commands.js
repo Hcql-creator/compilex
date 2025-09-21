@@ -75,7 +75,11 @@ const commands = [
 
   new SlashCommandBuilder()
     .setName('clear')
-    .setDescription('Efface les messages')
+    .setDescription('Efface les messages'),
+
+    new SlashCommandBuilder()
+    .setName('close')
+    .setDescription('Ferme un ticket OU ferme un salon'),
 ];
 
 

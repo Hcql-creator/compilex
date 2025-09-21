@@ -242,7 +242,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
   if (interaction.commandName === 'clear') {
     if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageMessages)){
-      await interaction.reply({ content: `❌ Tu n'as pas les permissions pour effacer les messages !`, ephemeral: true });
+      return interaction.reply({ content: `❌ Tu n'as pas les permissions pour effacer les messages !`, ephemeral: true });
     }
     const salon = interaction.channel;
 
@@ -268,7 +268,16 @@ client.on(Events.InteractionCreate, async (interaction) => {
     await newSalon.send("✅ Salon vidé");
   }
 
+  if (interaction.commandName === 'close'){
+    const salon = interaction.channel
+    if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageChannels)){
+      return interaction.reply({content: `❌ Tu n'as pas les permissions pour effacer les messages !`,
+        ephemeral : true
+      })
+    }
+    await salon.delete().catch(err => console.error(err));
 
+  }
 });
 
 client.login(token);
