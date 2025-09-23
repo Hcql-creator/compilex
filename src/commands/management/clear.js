@@ -39,7 +39,7 @@ module.exports = {
     }}
     a = interraction.options.getInteger("nombre") % 100,
     await interraction.channel.bulkDelete(a, true);
-    return interraction.reply("Messages effacés avec succès !")
+    return interraction.reply({content:"Messages effacés avec succès !", ephemeral: true})
   },
   
 };
