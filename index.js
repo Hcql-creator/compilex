@@ -93,7 +93,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await guildMember.ban({ reason });
       await interaction.reply({
         content: `✅ ${member.tag} a été banni.\nRaison : ${reason}`,
-      });
+      }); 
+    
     } catch (error) {
       console.error(error);
       interaction.reply({
@@ -241,7 +242,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 
   if (interaction.commandName === 'clear') {
-    if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageMessages)){
+    if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageMessages)) {
       return interaction.reply({ content: `❌ Tu n'as pas les permissions pour effacer les messages !`, ephemeral: true });
     }
     const salon = interaction.channel;
@@ -268,16 +269,18 @@ client.on(Events.InteractionCreate, async (interaction) => {
     await newSalon.send("✅ Salon vidé");
   }
 
-  if (interaction.commandName === 'close'){
+  if (interaction.commandName === 'close') {
     const salon = interaction.channel
-    if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageChannels)){
-      return interaction.reply({content: `❌ Tu n'as pas les permissions pour effacer les messages !`,
-        ephemeral : true
+    if (!interaction.memberPermissions.has(PermissionsBitField.Flags.ManageChannels)) {
+      return interaction.reply({
+        content: `❌ Tu n'as pas les permissions pour effacer les messages !`,
+        ephemeral: true
       })
     }
     await salon.delete().catch(err => console.error(err));
 
   }
+
 });
 
 client.login(token);
