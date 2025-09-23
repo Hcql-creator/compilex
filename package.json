@@ -1,7 +1,7 @@
 {
-  "type": "module",
+  "type": "commonjs",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js"
   },
   "dependencies": {
     "discord.js": "^14.22.1",
