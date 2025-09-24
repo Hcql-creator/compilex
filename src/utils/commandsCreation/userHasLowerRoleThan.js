@@ -5,6 +5,7 @@ module.exports = async (interraction, executingUser, targetUser) => {
   const guildExecutingUser = await getGuildUser(interraction, executingUser);
 
   const guildTargetUser = await getGuildUser(interraction, targetUser);
+  console.log("Fonction comparation de roles");
   if (
     guildExecutingUser.roles.highest.position <
     guildTargetUser.roles.highest.position
@@ -14,5 +15,6 @@ module.exports = async (interraction, executingUser, targetUser) => {
     );
     return true;
   }
+  console.log("Test passed");
   return false;
 };
