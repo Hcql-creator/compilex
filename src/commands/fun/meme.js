@@ -20,7 +20,7 @@ module.exports = {
     // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
     callback: async (client, interaction) => {
         try {
-            const url = 'https://meme-api.com/gimme';
+            const url = 'https://meme-api.com/gimme/ProgrammerHumor';
 
             const response = await fetch(url);
             if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
