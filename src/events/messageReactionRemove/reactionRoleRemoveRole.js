@@ -1,5 +1,6 @@
 module.exports = async (client, reaction, user) => {
-  if (!(reaction.message.id === "1420759078183112766")) return;
+  const messageID = "1420759078183112766";
+  if (!(reaction.message.id === messageID)) return;
   if (reaction.partial) reaction = await reaction.fetch();
   const guild = reaction.message.guild;
   const guildUser = await guild.members.fetch(user.id);
