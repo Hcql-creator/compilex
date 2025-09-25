@@ -6,15 +6,15 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser")
+const getGuildUser = require("../../utils/commandsCreation/getGuildUser");
 
 module.exports = {
   // Nom de la commande
   name: "unmute",
-  
+
   // Description de la commande
-  description: "    Désactive la sanction mute",
-  
+  description: "Désactive la sanction mute",
+
   // Paramètres de la commande
   options: [
     {
@@ -24,10 +24,10 @@ module.exports = {
       type: ApplicationCommandOptionType.Mentionable,
     },
   ],
-  
+
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.ManageMessages],
-  
+
   // Permissions requises pour que le bot puisse éxécuter la commande
   botPermissions: [PermissionFlagsBits.Administrator],
 
@@ -43,18 +43,20 @@ module.exports = {
     const guildMutedMember = await getGuildUser(interraction, mutedMember);
 
     // si il a le role on enleve
-    try {if (guildMutedMember.roles.cache.has(mutedRoles[0].id)){
-      await guildMutedMember.roles.remove(mutedRoles[0])
-    }} catch {
-      console.log("Un problème est survenu")
+    try {
+      if (guildMutedMember.roles.cache.has(mutedRoles[0].id)) {
+        await guildMutedMember.roles.remove(mutedRoles[0]);
+      }
+    } catch {
+      console.log("Un problème est survenu");
     }
     // si il est mute temp on arrete
-    try{ 
-      await guildMutedMember.timeout(null, 'Annulation du mute avant la fin')
-    } catch(error){
-      console.error(error)
+    try {
+      await guildMutedMember.timeout(null, "Annulation du mute avant la fin");
+    } catch (error) {
+      console.error(error);
     }
 
-      return interraction.reply("Membre unmute avec succès")
+    return interraction.reply("Membre unmute avec succès");
   },
 };
