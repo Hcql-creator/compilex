@@ -4,7 +4,7 @@ const eventHandler = require("./handlers/eventHandler");
 
 dotenv.config();
 
-const token = process.env.DEV_BOT_TOKEN_KEY;
+const token = process.env.BOT_TOKEN_KEY;
 
 const client = new Client({
   intents: [
@@ -18,6 +18,5 @@ const client = new Client({
 });
 
 eventHandler(client);
-
 
 client.login(token);
