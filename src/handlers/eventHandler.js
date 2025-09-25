@@ -14,11 +14,11 @@ module.exports = (client) => {
     console.log(eventName);
 
     // On fait un event listener
-    client.on(eventName, async (arg) => {
+    client.on(eventName, async (...arg) => {
       for (const eventFile of eventFiles) {
         const eventFunction = require(eventFile);
         // On appele notre fonction
-        await eventFunction(client, arg);
+        await eventFunction(client, ...arg);
       }
     });
   }
