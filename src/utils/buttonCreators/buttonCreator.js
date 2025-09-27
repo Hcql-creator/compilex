@@ -1,5 +1,5 @@
 const { ButtonBuilder, ButtonStyle } = require("discord.js");
-module.exports = (id, emoji = "", label, style = ButtonStyle.Primary) => {
+module.exports = (id, label, emoji = "", style = ButtonStyle.Primary) => {
   const button = new ButtonBuilder()
     .setCustomId(id)
     .setLabel(label)
