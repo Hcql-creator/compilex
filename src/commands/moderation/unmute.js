@@ -6,7 +6,6 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser");
 
 module.exports = {
   // Nom de la commande
@@ -40,7 +39,7 @@ module.exports = {
 
     //on récupère le membre banni
     const mutedMember = interraction.options.getUser("membre");
-    const guildMutedMember = await getGuildUser(interraction, mutedMember);
+    const guildMutedMember = interraction.options.getMember("membre");
 
     // si il a le role on enleve
     try {

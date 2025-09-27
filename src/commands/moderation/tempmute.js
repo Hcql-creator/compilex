@@ -6,7 +6,7 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
-const isGuildMember = require("../../utils/commandsCreation/getGuildUser");
+const isGuildMember = require("../../utils/commandsCreation/isGuildMember");
 const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerRoleThan");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
 

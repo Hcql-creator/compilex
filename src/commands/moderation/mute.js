@@ -7,7 +7,6 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
 
@@ -34,7 +33,7 @@ module.exports = {
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
     const mutedMember = interraction.options.getUser("membre");
-    const guildMutedMember = await getGuildUser(interraction, mutedMember);
+    const guildMutedMember = interraction.options.getMember("membre");
 
     if (isBotTargetingHimself(client, interraction, mutedMember)) return;
     if (isUsingCommandOnHimself(interraction, mutedMember)) return;

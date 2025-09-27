@@ -10,7 +10,6 @@ const isGuildMember = require("../../utils/commandsCreation/isGuildMember");
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
 const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerRoleThan");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser");
 
 module.exports = {
   name: "kick",
@@ -43,7 +42,7 @@ module.exports = {
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
     const kickedMember = interraction.options.getUser("membre");
-    const guildKickedMember = await getGuildUser(interraction, kickedMember);
+    const guildKickedMember = interraction.options.getMember("membre");
 
     if (!isGuildMember(interraction, kickedMember)) return;
 
@@ -54,7 +53,7 @@ module.exports = {
     const rolePermissions = await userHasLowerRoleThan(
       interraction,
       interraction.user,
-      kickedMember
+      guildKickedMember
     );
     if (rolePermissions) return;
 
