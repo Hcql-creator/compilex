@@ -73,7 +73,6 @@ module.exports = {
     // Sinon on lui ajoute le role
     let response = "";
     try {
-      console.log("muted role name:", mutedRole.name);
       await guildMutedMember.roles.add(mutedRole);
       response = "✅ Membre mute avec succès";
     } catch (error) {
@@ -82,8 +81,6 @@ module.exports = {
     // On défini les permissions pour tous les salons du role Muted
     const channelCollections = await interraction.guild.channels.fetch();
     const channels = Array.from(channelCollections.values());
-    console.log("--- Channels ---");
-    console.log("Length:", channels.length);
     for (const channel of channels) {
       channel.permissionOverwrites.edit(mutedRole, {
         SendMessages: false,

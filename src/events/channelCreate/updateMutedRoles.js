@@ -12,7 +12,6 @@ module.exports = async (client, channel) => {
   // Si le role Muted n'existe pas
   let mutedRole;
   if (mutedRoles.length === 0) {
-    console.log("mutedRoles", mutedRoles.length);
     mutedRole = await channel.guild.roles.create({
       name: "Muted",
       colors: 0x808080,
