@@ -24,7 +24,7 @@ module.exports = {
       name: "membre",
       description: "Permet d'expulser un membre",
       required: true,
-      type: ApplicationCommandOptionType.Mentionable,
+      type: ApplicationCommandOptionType.User,
     },
     {
       name: "raison",

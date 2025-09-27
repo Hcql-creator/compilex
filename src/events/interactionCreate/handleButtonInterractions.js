@@ -4,11 +4,8 @@ const getAllFiles = require("../../utils/getAllFiles");
 module.exports = (client, interaction) => {
   if (!interaction.isButton()) return;
 
-  console.log("Button interaction detected");
-
   // Get all button files
   const buttonFiles = getAllFiles(path.join(__dirname, "../..", "buttons"));
-  console.log("------ Buttons ------");
   let buttonActionFile;
   for (const buttonFile of buttonFiles) {
     const fileName = buttonFile
