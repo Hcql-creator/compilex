@@ -23,7 +23,7 @@ module.exports = {
       name: "membre",
       description: "Membre à mute",
       required: true,
-      type: ApplicationCommandOptionType.Mentionable,
+      type: ApplicationCommandOptionType.User,
     },
     {
       name: "duree",

@@ -21,7 +21,7 @@ module.exports = {
       name: "membre",
       description: "Le membre à mute",
       required: true,
-      type: ApplicationCommandOptionType.Mentionable,
+      type: ApplicationCommandOptionType.User,
     },
   ],
 

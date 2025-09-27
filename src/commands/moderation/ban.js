@@ -24,7 +24,7 @@ module.exports = {
       name: "utilisateur",
       description: "L'utilisateur a bannir",
       required: true,
-      type: ApplicationCommandOptionType.Mentionable,
+      type: ApplicationCommandOptionType.User,
     },
     {
       name: "raison",
