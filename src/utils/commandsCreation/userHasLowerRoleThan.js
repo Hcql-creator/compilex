@@ -1,5 +1,5 @@
 // Cette fonction renvoie un booléen (et une interraction.reply) si le membre passé en premier paramètre user a un role inférieur à celui passé en deuxième paramètre user
-module.exports = async (interraction, executingUser, targetGuildMember) => {
+module.exports = async (interraction, targetGuildMember) => {
   const guildExecutingUser = interraction.member;
   if (
     guildExecutingUser.roles.highest.position <
