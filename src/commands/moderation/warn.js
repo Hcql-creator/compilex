@@ -1,9 +1,8 @@
 const {
   ApplicationCommandOptionType,
   PermissionFlagsBits,
-  MessageFlags
+  MessageFlags,
 } = require("discord.js");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser")
 module.exports = {
   name: "warn",
   description: "Donner un avertissement à un membre",
@@ -22,26 +21,37 @@ module.exports = {
     },
   ],
   permissionsRequired: [PermissionFlagsBits.ManageMessages],
-  botPermissions: [PermissionFlagsBits.ManageRoles, PermissionFlagsBits.ModerateMembers],
-  
+  botPermissions: [
+    PermissionFlagsBits.ManageRoles,
+    PermissionFlagsBits.ModerateMembers,
+  ],
+
   callback: async (client, interaction) => {
     console.log("1");
     const user = interaction.options.getUser("membre");
-    const member = await getGuildUser(interaction, user);
+    const member = interaction.options.getMember("membre");
     const rolesCollection = await interaction.guild.roles.fetch();
     const roles = Array.from(rolesCollection.values());
 
     if (!member) {
-      return interaction.reply({ content: "Impossible de récupérer le membre.", ephemeral: true });
+      return interaction.reply({
+        content: "Impossible de récupérer le membre.",
+        ephemeral: true,
+      });
     }
 
     // Récupérer les rôles warn
-    const warnRoles = member.roles.cache.filter(r => r.name.toLowerCase().startsWith("warn"));
-    console.log("Roles warn trouvés :", warnRoles.map(r => r.name));
+    const warnRoles = member.roles.cache.filter((r) =>
+      r.name.toLowerCase().startsWith("warn")
+    );
+    console.log(
+      "Roles warn trouvés :",
+      warnRoles.map((r) => r.name)
+    );
 
     // Vérifier si le membre a déjà warn2
-    const hasWarn2 = warnRoles.some(r => r.name.toLowerCase() === "warn2");
-    const hasWarn1 = warnRoles.some(r => r.name.toLowerCase() === "warn1");
+    const hasWarn2 = warnRoles.some((r) => r.name.toLowerCase() === "warn2");
+    const hasWarn1 = warnRoles.some((r) => r.name.toLowerCase() === "warn1");
     const warn1 = roles.filter((role) => role.name === "warn1");
     const warn2 = roles.filter((role) => role.name === "warn2");
     const reason = interaction.options.getString("raison");
@@ -69,14 +79,12 @@ module.exports = {
         content: `✅ ${member} a été avertit une seconde fois car ${reason}. Attention, la prochaine fois c'est un mute d'un mois !`,
         ephemeral: false,
       });
-    }
-    else {
+    } else {
       await member.roles.add(warn1);
       return interaction.reply({
         content: ` ${member} a été avertit une première fois car ${reason}.`,
         ephemeral: true,
       });
     }
-
-  }
-}
+  },
+};

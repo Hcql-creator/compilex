@@ -9,7 +9,6 @@ const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCom
 const isGuildMember = require("../../utils/commandsCreation/isGuildMember");
 const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerRoleThan");
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
-const getGuildUser = require("../../utils/commandsCreation/getGuildUser");
 
 module.exports = {
   // Nom de la commande
@@ -42,11 +41,13 @@ module.exports = {
     const reason =
       interraction.options.getString("raison") ?? "Aucun raison fournie";
 
-    const guildBannedMember = await getGuildUser(interraction, bannedMember);
+    const guildBannedMember = interraction.options.getMember("utilisateur");
 
     if (isGuildMember(interraction, bannedMember)) return;
 
-    if (userHasLowerRoleThan(interraction, interraction.user, bannedMember))
+    if (
+      userHasLowerRoleThan(interraction, interraction.user, guildBannedMember)
+    )
       return;
 
     if (isUsingCommandOnHimself(interraction, bannedMember)) return;
