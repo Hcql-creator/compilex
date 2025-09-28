@@ -2,7 +2,7 @@ const path = require("path");
 const getAllFiles = require("../../utils/getAllFiles");
 
 module.exports = (client, interaction) => {
-  if (!interaction.isStringSelectMenu()) return;
+  if (!interaction.isUserSelectMenu()) return;
 
   // Get all dropdown Folders
   const dropdownFolders = getAllFiles(
@@ -17,16 +17,7 @@ module.exports = (client, interaction) => {
   }
 
   // On cherche le fichier dans cette folder pour éxécuter l'interaction correspondante
-  const actionFolderFiles = getAllFiles(actionFolder, false);
-  let actionFile;
-  for (const dropdownItem of actionFolderFiles) {
-    const fileName = dropdownItem
-      .replace(/\\/g, "/")
-      .split("/")
-      .pop()
-      .split(".")[0];
-    if (fileName === interaction.values[0]) actionFile = fileName;
-  }
+  let actionFile = actionFolder.replace(/\\/g, "/").split("/").pop();
 
   // On éxécute le code du fichier correspondant
   if (actionFile) {

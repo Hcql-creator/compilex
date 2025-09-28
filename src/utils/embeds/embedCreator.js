@@ -14,6 +14,7 @@ module.exports = (
     .setColor(color)
     .setTitle(title)
     .setDescription(description);
+
   if (footer) {
     embed.setFooter({
       text:
