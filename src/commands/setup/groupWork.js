@@ -1,6 +1,8 @@
 const embedCreator = require("../../utils/embeds/embedCreator");
 const embedField = require("../../utils/embeds/embedField");
 const blankEmbedField = require("../../utils/embeds/blankEmbedField");
+const buttonCreator = require("../../utils/buttonCreators/buttonCreator");
+const linkButtonCreator = require("../../utils/buttonCreators/linkButtonCreator");
 
 const {
   // Si la commande requiert des paramètres
@@ -9,6 +11,8 @@ const {
   // Si la commande requiert des permissions pour être utilisée par l'utilisateur **OU** Si le bot à besoin de permission pour
   // éxécuter la commande
   PermissionFlagsBits,
+  ActionRowBuilder,
+  ButtonStyle,
 } = require("discord.js");
 
 module.exports = {
@@ -22,7 +26,7 @@ module.exports = {
   options: [],
 
   // Permissions requises pour l'utilisateur éxécutant la commande
-  permissionsRequired: [PermissionFlagsBits.Administrator],
+  permissionsRequired: [],
 
   // Permissions requises pour que le bot puisse éxécuter la commande
   botPermissions: [PermissionFlagsBits.Administrator],
@@ -35,10 +39,12 @@ module.exports = {
       "Travail de groupe",
       "Créer votre salon privé avec vos camarades de classe pour travailler en groupe !",
       "https://www.teachhub.com/wp-content/uploads/2020/09/Sept-9-Benefits-of-Group-Work_web.jpg",
-      ""
+      "",
+      false,
+      false
     ).addFields(
       blankEmbedField(),
-      embedField("Nombre de participants", "1 - 10", true),
+      embedField("Nombre de participants", "1 - illimité", true),
       embedField("Durée du salon", "Illimitée (fin du travail)", true),
       embedField(
         "Objectif",
@@ -46,6 +52,24 @@ module.exports = {
       ),
       blankEmbedField()
     );
-    interraction.channel.send({ embeds: [showcaseMessage] });
+    const row = new ActionRowBuilder();
+    row.addComponents(
+      buttonCreator(
+        "groupWorkStartButton",
+        "Commencer",
+        "⏲️",
+        ButtonStyle.Success
+      ),
+      linkButtonCreator(
+        "",
+        "Comment ça marche",
+        "https://notre-site-demo.vercel.app"
+      )
+    );
+
+    interraction.channel.send({
+      embeds: [showcaseMessage],
+      components: [row],
+    });
   },
 };
