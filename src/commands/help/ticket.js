@@ -25,7 +25,7 @@ module.exports = {
     // Défini le nom du ticket
     const ticketName = `ticket${String(newTicketNumber).padStart(3, "0")}`;
 
-    // Créer le ticker
+    // Créer le ticket
     const channel = await interraction.guild.channels.create({
       name: ticketName,
       type: 0,

@@ -69,24 +69,38 @@ module.exports = {
     } else {
       mutedRole = mutedRoles[0];
     }
-    // Sinon on lui ajoute le role
-    let response = "";
-    try {
-      await guildMutedMember.roles.add(mutedRole);
-      response = "✅ Membre mute avec succès";
-    } catch (error) {
-      response = "Erreur lors du mute";
-    }
-    // On défini les permissions pour tous les salons du role Muted
-    const channelCollections = await interraction.guild.channels.fetch();
-    const channels = Array.from(channelCollections.values());
-    for (const channel of channels) {
-      channel.permissionOverwrites.edit(mutedRole, {
-        SendMessages: false,
-        ViewChannel: true,
-      });
-    }
 
-    interraction.reply(response);
+    // Embeds
+    const errorEmbed = embedCreator(
+      interraction,
+      "#FF0000",
+      "Erreur lors du mute",
+      `Le membre <@${mutedMember.user.id}> n'a pas pu être réduit au silence, veuillez réessayer ultérieurement ou signaler le problème à un administrateur.`
+    );
+
+    const successEmbed = embedCreator(
+      interraction,
+      "#00FF00",
+      "Membre réduit au silence avec succès !",
+      `Le membre <@${mutedMember.user.id}> a été réduit au silence, veuillez réessayer ultérieurement ou signaler le problème à un administrateur.`
+    );
+
+    // Sinon on lui ajoute le role
+
+    try {
+      // On défini les permissions pour tous les salons du role Muted
+      const channelCollections = await interraction.guild.channels.fetch();
+      const channels = Array.from(channelCollections.values());
+      for (const channel of channels) {
+        channel.permissionOverwrites.edit(mutedRole, {
+          SendMessages: false,
+          ViewChannel: true,
+        });
+      }
+      await guildMutedMember.roles.add(mutedRole);
+      interraction.reply({ embeds: [successEmbed] });
+    } catch (error) {
+      interraction.reply({ embeds: [errorEmbed] });
+    }
   },
 };

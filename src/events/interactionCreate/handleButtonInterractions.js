@@ -3,6 +3,7 @@ const getAllFiles = require("../../utils/getAllFiles");
 
 module.exports = (client, interaction) => {
   if (!interaction.isButton()) return;
+  const [baseID, ...args] = interaction.customId.split("|");
 
   // Get all button files
   const buttonFolders = getAllFiles(
@@ -21,7 +22,7 @@ module.exports = (client, interaction) => {
         .split("/")
         .pop()
         .split(".")[0];
-      if (fileName === interaction.customId) {
+      if (fileName === baseID) {
         buttonActionFolder = folder.replace(/\\/g, "/").split("/").pop();
         buttonActionFile = fileName;
       }
@@ -37,6 +38,6 @@ module.exports = (client, interaction) => {
       `${buttonActionFile}.js`
     );
     const button = require(filePath);
-    button(client, interaction);
+    button(client, interaction, args);
   }
 };

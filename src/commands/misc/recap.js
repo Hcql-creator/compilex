@@ -73,7 +73,7 @@ module.exports = {
         .map((msg) => `${msg.authorName} (${msg.authorID}): ${msg.content}`)
         .join("\n");
       geminiResponse = await geminiRequest(stringOutput, question, true);
-      interraction.editReply(geminiResponse);
+      interraction.editReply({ content: geminiResponse, ephemeral: true });
     });
   },
 };

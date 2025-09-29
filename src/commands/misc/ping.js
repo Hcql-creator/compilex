@@ -10,6 +10,6 @@ module.exports = {
 
     const reply = await interraction.fetchReply();
     const ping = reply.createdTimestamp - interraction.createdTimestamp;
-    interraction.editReply(`Pong ! Responded in ${ping}ms`);
+    interraction.editReply(`Pong ! Répondu en ${ping}ms`);
   },
 };
