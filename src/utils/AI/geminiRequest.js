@@ -1,7 +1,15 @@
 const { GoogleGenAI } = require("@google/genai");
-const { geminiRecapCustomInstructions } = require("../../../config.json");
+const {
+  geminiRecapCustomInstructions,
+  geminiLinkAnalysisInstructions,
+} = require("../../../config.json");
 
-module.exports = async (prompt, additionnalInfos = "", recap = false) => {
+module.exports = async (
+  prompt,
+  additionnalInfos = "",
+  recap = false,
+  suspisiousLinks = false
+) => {
   const ai = new GoogleGenAI({});
   // PROMPT
   let finalPrompt;
@@ -13,10 +21,15 @@ module.exports = async (prompt, additionnalInfos = "", recap = false) => {
       "!!!" +
       "Conversation à résumer: \n" +
       prompt;
+  } else if (suspisiousLinks) {
+    finalPrompt =
+      geminiLinkAnalysisInstructions +
+      prompt +
+      "Liens suspects détectés (il peut y en avoir d'autres cachés dans le message, répond quoiqu'il arrive par true ou false en fonction de la suspicion des liens):\n" +
+      additionnalInfos;
   } else {
     finalPrompt = prompt;
   }
-
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     config: {
@@ -29,5 +42,7 @@ module.exports = async (prompt, additionnalInfos = "", recap = false) => {
   });
   const finalResponse =
     response.text.length > 2000 ? "Réponse trop longue" : response.text;
+  console.log("GEMINI RESPONSE:", response.text);
+  console.log("Gemini finished");
   return finalResponse;
 };
