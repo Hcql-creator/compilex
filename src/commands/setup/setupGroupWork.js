@@ -17,7 +17,7 @@ const {
 
 module.exports = {
   // Nom de la commande
-  name: "groupwork",
+  name: "setupgroupwork",
 
   // Description de la commande
   description: "Créer le message interractif de création de groupe",
