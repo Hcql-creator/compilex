@@ -21,10 +21,10 @@ module.exports = async (client, interaction) => {
       false,
       true
     );
-    await interaction.delete();
     if (isLinkSuspicious === "true") {
+      await interaction.delete();
       interaction.channel.send(
-        `<@${interaction.author.id}>, lien suspicieux détecté ! Incident signlé aux administrateurs`
+        `<@${interaction.author.id}>, lien suspicieux détecté ! Incident signalé aux administrateurs`
       );
     }
   }

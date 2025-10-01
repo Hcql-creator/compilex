@@ -2,13 +2,15 @@ const { GoogleGenAI } = require("@google/genai");
 const {
   geminiRecapCustomInstructions,
   geminiLinkAnalysisInstructions,
+  geminiAutoModeractionAnalysisInstructions,
 } = require("../../../config.json");
 
 module.exports = async (
   prompt,
   additionnalInfos = "",
   recap = false,
-  suspisiousLinks = false
+  suspisiousLinks = false,
+  autoMod = false
 ) => {
   const ai = new GoogleGenAI({});
   // PROMPT
@@ -22,14 +24,13 @@ module.exports = async (
       "Conversation à résumer: \n" +
       prompt;
   } else if (suspisiousLinks) {
-    finalPrompt =
-      geminiLinkAnalysisInstructions +
-      prompt +
-      "Liens suspects détectés (il peut y en avoir d'autres cachés dans le message, répond quoiqu'il arrive par true ou false en fonction de la suspicion des liens):\n" +
-      additionnalInfos;
+    finalPrompt = geminiLinkAnalysisInstructions + prompt;
+  } else if (autoMod) {
+    finalPrompt = geminiAutoModeractionAnalysisInstructions + prompt;
   } else {
     finalPrompt = prompt;
   }
+  console.log(finalPrompt);
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     config: {
