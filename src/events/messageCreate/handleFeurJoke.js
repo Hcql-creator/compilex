@@ -10,6 +10,7 @@ module.exports = (client, interaction) => {
     "rtz!!!",
     "druplé!!!",
     "lcomm!!!",
+    "coubeh !!",
     "rtet!!!",
     "tuor 🎶",
     "d!!!",
