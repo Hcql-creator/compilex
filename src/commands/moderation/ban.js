@@ -11,6 +11,7 @@ const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerR
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
 const createEmbed = require("../../utils/embeds/embedCreator");
 const createButton = require("../../utils/buttonCreators/buttonCreator");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   name: "ban",
@@ -147,8 +148,15 @@ module.exports = {
                 : `${deleteMessageSeconds / 3600}h`
             }`
           );
-
+          sendLog(interaction, "Bannissement", "Red", `**${bannedUser.tag}** a été banni \n**Raison** : ${reason}\n🗑️ **Messages supprimés** : ${deleteChoice === "0"
+              ? "Aucun"
+              : deleteChoice === "all"
+                ? "Tous (7 jours max)"
+                : `${deleteMessageSeconds / 3600}h`
+            }`)
           return i.update({ embeds: [successEmbed], components: [] });
+          
+
         } catch (error) {
           console.error("Erreur:", error);
           return i.update({

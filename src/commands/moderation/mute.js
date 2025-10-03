@@ -9,6 +9,7 @@ const {
 } = require("discord.js");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   name: "mute",
@@ -22,6 +23,12 @@ module.exports = {
       required: true,
       type: ApplicationCommandOptionType.User,
     },
+    {
+      name: "raison",
+      description: "La raison du mute",
+      required: true,
+      type: ApplicationCommandOptionType.String,
+    },
   ],
 
   // Permissions requises pour l'utilisateur éxécutant la commande
@@ -34,6 +41,7 @@ module.exports = {
   callback: async (client, interraction) => {
     const mutedMember = interraction.options.getUser("membre");
     const guildMutedMember = interraction.options.getMember("membre");
+    const raisonMute = interraction.options.getString("raison")
 
     if (isBotTargetingHimself(client, interraction, mutedMember)) return;
     if (isUsingCommandOnHimself(interraction, mutedMember)) return;
@@ -73,7 +81,7 @@ module.exports = {
     let response = "";
     try {
       await guildMutedMember.roles.add(mutedRole);
-      response = "✅ Membre mute avec succès";
+      response = `✅ Membre mute avec succès /nRaison : ${raisonMute}`;
     } catch (error) {
       response = "Erreur lors du mute";
     }
@@ -86,7 +94,8 @@ module.exports = {
         ViewChannel: true,
       });
     }
-
+    sendLog(interraction, "Mute", "Orange", `Le membre **${guildMutedMember} a été mute \nReason : **${raisonMute}`)
+    
     interraction.reply(response);
   },
 };

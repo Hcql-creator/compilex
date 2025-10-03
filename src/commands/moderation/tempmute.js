@@ -9,6 +9,7 @@ const {
 const isGuildMember = require("../../utils/commandsCreation/isGuildMember");
 const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerRoleThan");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   // Nom de la commande
@@ -51,15 +52,7 @@ module.exports = {
     const guildMember = interraction.options.getMember("membre");
     if (!isGuildMember) return;
 
-    if (isUsingCommandOnHimself(interraction, guildMember)) return;
-    const rolePermissions = await userHasLowerRoleThan(
-      interraction,
-      interraction.user,
-      guildMember
-    );
-    if (rolePermissions) {
-      return;
-    }
+    if (await userHasLowerRoleThan(interraction, guildMember)) return;
 
     // Vérifier la durée
     const duree = interraction.options.getInteger("duree");
@@ -75,6 +68,7 @@ module.exports = {
 
     try {
       await guildMember.timeout(duree * 60 * 1000, reason); // timeout en ms
+      sendLog(interraction, "Membre tempMute", "Orange", `**${guildMember}** a été mute temporairement \nReason : ${reason}`)
       return interraction.reply({
         content: `✅ ${guildMember.user.tag} a été mute pendant ${duree} minutes.\nRaison : ${reason}`,
         ephemeral: false,

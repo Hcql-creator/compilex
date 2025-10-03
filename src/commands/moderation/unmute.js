@@ -6,6 +6,7 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   // Nom de la commande
@@ -55,7 +56,7 @@ module.exports = {
     } catch (error) {
       console.error(error);
     }
-
+    sendLog(interraction, "Membre Unmute", "Yellow", `**${mutedRoles}** n'est plus mute`)
     return interraction.reply("Membre unmute avec succès");
   },
 };
