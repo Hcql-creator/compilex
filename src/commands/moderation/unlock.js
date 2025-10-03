@@ -6,6 +6,7 @@ const {
     // éxécuter la commande
     PermissionFlagsBits,
 } = require("discord.js");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
     // Nom de la commande
@@ -39,7 +40,7 @@ module.exports = {
                 SendMessages: true,
                 ViewChannel: true,
             });
-
+            sendLog(interaction, "Salon dévérouillé", "Yellow", `**${salon.name}** n'est plus vérouillé`)
             await interaction.reply({
                 content: `🔓 Le salon **${salon.name}** a été deverrouillé pour le rôle **${roleEtudiant.name}**.`,
             });

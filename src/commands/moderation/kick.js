@@ -10,6 +10,7 @@ const isGuildMember = require("../../utils/commandsCreation/isGuildMember");
 const isBotTargetingHimself = require("../../utils/commandsCreation/isBotTargetingHimself");
 const isUsingCommandOnHimself = require("../../utils/commandsCreation/isUsingCommandOnHimself");
 const userHasLowerRoleThan = require("../../utils/commandsCreation/userHasLowerRoleThan");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   name: "kick",
@@ -50,12 +51,7 @@ module.exports = {
 
     if (isUsingCommandOnHimself(interraction, kickedMember)) return;
 
-    const rolePermissions = await userHasLowerRoleThan(
-      interraction,
-      interraction.user,
-      guildKickedMember
-    );
-    if (rolePermissions) return;
+    if (await userHasLowerRoleThan(interraction, guildKickedMember)) return;
 
     if (!guildKickedMember.kickable) {
       return interraction.reply("Cet utilisateur n'est pas expulsable");
@@ -66,6 +62,8 @@ module.exports = {
       interraction.options.getString("raison") ?? "Aucune raison spécifiée";
     try {
       // Commande Kick
+      sendLog(interraction, "Membre kick", "Red", `**${guildKickedMember}** a été kick \nReason : ${kickReason}`)
+      
       await guildKickedMember.kick(kickReason);
       response = "Membre explusé avec succès";
     } catch (error) {
