@@ -1,4 +1,5 @@
 const geminiRequest = require("../../utils/AI/geminiRequest");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
   const urlRegex = /(https?|ftp|file):\/\/[^\s]+/gi;
@@ -21,7 +22,13 @@ module.exports = async (client, interaction) => {
       false,
       true
     );
+
+    let stringLinks = ""
+    suspisiousLinks.forEach((link) => {
+      stringLinks += `\n ${link}`
+    });
     if (isLinkSuspicious === "true") {
+      sendLog(interaction, "Lien Suspicieux", "Red", stringLinks)
       await interaction.delete();
       interaction.channel.send(
         `<@${interaction.author.id}>, lien suspicieux détecté ! Incident signalé aux administrateurs`

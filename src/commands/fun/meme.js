@@ -7,6 +7,7 @@ const {
     PermissionFlagsBits,
 } = require("discord.js");
 
+
 module.exports = {
     // Nom de la commande
     name: "meme",
@@ -26,7 +27,6 @@ module.exports = {
             if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
 
             const data = await response.json();
-
             await interaction.reply({
                 embeds: [
                     {
