@@ -5,7 +5,13 @@ module.exports = async (interaction, title, color, embedContent = '') => {
     const channelID = "1422852024281862155"; 
     const guild = interaction.guild;
     let logChannel = guild.channels.cache.get(channelID);
-    const user = interaction.user.tag;
+    let user;
+    if (interaction.user) {
+      user = interaction.user.tag
+    } else {
+      user = interaction.author.tag
+    }
+
     const commandName = interaction.commandName;
    
     //embed

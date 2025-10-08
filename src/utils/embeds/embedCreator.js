@@ -16,13 +16,24 @@ module.exports = (
     .setDescription(description);
 
   if (footer) {
-    embed.setFooter({
-      text:
-        interaction.member.nickname ??
-        interaction.user.globalName ??
-        interaction.user.tag,
-      iconURL: interaction.user.displayAvatarURL(),
-    });
+    if (interaction.user) {
+      embed.setFooter({
+        text:
+          interaction.member.nickname ??
+          interaction.user.globalName ??
+          interaction.user.tag,
+        iconURL: interaction.user.displayAvatarURL(),
+      });
+    }
+    else {
+      embed.setFooter({
+        text:
+          interaction.member.nickname ??
+          interaction.author.globalName ??
+          interaction.author.tag,
+        iconURL: interaction.author.displayAvatarURL(),
+      });
+    }
   }
 
   if (thumbnail) {

@@ -5,6 +5,7 @@ const {
   // Si la commande requiert des permissions pour être utilisée par l'utilisateur **OU** Si le bot à besoin de permission pour
   // éxécuter la commande
   PermissionFlagsBits,} = require("discord.js");
+  const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   // Nom de la commande
@@ -49,6 +50,7 @@ permissionsRequired: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.Ma
       parent: parentId || null,
       permissionOverwrites: overwrites
     });
+    sendLog(interaction, "Salon Duppliqué", "Green", `**${nom}** a été duppliqué !`)
     await newSalon.send("✅ Salon crée");
     if (interaction.options.getBoolean("effacer")){
         await salon.delete().catch(err => console.error(err));

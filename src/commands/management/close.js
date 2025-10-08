@@ -6,6 +6,7 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   // Nom de la commande
@@ -25,6 +26,7 @@ module.exports = {
   callback: async (client, interraction) => {
     const salon = interraction.channel;
     try {
+    sendLog(interraction, "Salon fermé", "Yellow", `**${salon.name}** a été fermé`)
     await salon.delete()
 } catch {
     interraction.reply("Ca pas marché t'es con ou quoi - bg")
