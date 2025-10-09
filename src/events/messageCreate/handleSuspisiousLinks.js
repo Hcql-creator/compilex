@@ -21,7 +21,7 @@ module.exports = async (client, interaction) => {
       false,
       true
     );
-    if (isLinkSuspicious === "true") {
+    if (isLinkSuspicious === "true" || isLinkSuspicious.includes("true")) {
       await interaction.delete();
       interaction.channel.send(
         `<@${interaction.author.id}>, lien suspicieux détecté ! Incident signalé aux administrateurs`
