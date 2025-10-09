@@ -6,6 +6,7 @@ const {
   // éxécuter la commande
   PermissionFlagsBits,
 } = require("discord.js");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = {
   // Nom de la commande
@@ -39,6 +40,7 @@ module.exports = {
     }}
     a = interraction.options.getInteger("nombre") % 100,
     await interraction.channel.bulkDelete(a, true);
+    sendLog(interraction, "Messages Effacés", "Orange", `Les messages ont été effacés dans le salon **${interraction.channel.name}**. \n**${interraction.options.getInteger("nombre")}** messages ont été effacés`)
     return interraction.reply({content:"Messages effacés avec succès !", ephemeral: true})
   },
   

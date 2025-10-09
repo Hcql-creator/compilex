@@ -1,4 +1,5 @@
 const geminiRequest = require("../../utils/AI/geminiRequest");
+const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
   const urlRegex = /(https?|ftp|file):\/\/[^\s]+/gi;
