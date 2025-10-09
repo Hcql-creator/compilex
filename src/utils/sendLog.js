@@ -42,3 +42,4 @@ module.exports = async (interaction, title, color, embedContent = "") => {
   await logChannel.send({ embeds: [embed] });
   console.log(`✅ Log envoyé : ${user} a utilisé /${commandName}`);
 };
+}
