@@ -22,13 +22,7 @@ module.exports = async (client, interaction) => {
       false,
       true
     );
-
-    let stringLinks = ""
-    suspisiousLinks.forEach((link) => {
-      stringLinks += `\n ${link}`
-    });
-    if (isLinkSuspicious === "true") {
-      sendLog(interaction, "Lien Suspicieux", "Red", stringLinks)
+    if (isLinkSuspicious === "true" || isLinkSuspicious.includes("true")) {
       await interaction.delete();
       interaction.channel.send(
         `<@${interaction.author.id}>, lien suspicieux détecté ! Incident signalé aux administrateurs`
