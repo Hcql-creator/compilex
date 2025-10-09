@@ -14,6 +14,7 @@ const sendLog = require("../../utils/sendLog");
 module.exports = {
   name: "mute",
   description: "Mute le membre spécifié pour une durée indéterminée",
+  devOnly: true,
 
   // Paramètres de la commande
   options: [
@@ -41,7 +42,7 @@ module.exports = {
   callback: async (client, interraction) => {
     const mutedMember = interraction.options.getUser("membre");
     const guildMutedMember = interraction.options.getMember("membre");
-    const raisonMute = interraction.options.getString("raison")
+    const raisonMute = interraction.options.getString("raison");
 
     if (isBotTargetingHimself(client, interraction, mutedMember)) return;
     if (isUsingCommandOnHimself(interraction, mutedMember)) return;
@@ -94,8 +95,13 @@ module.exports = {
         ViewChannel: true,
       });
     }
-    sendLog(interraction, "Mute", "Orange", `Le membre **${guildMutedMember} a été mute \nReason : **${raisonMute}`)
-    
+    sendLog(
+      interraction,
+      "Mute",
+      "Orange",
+      `Le membre **${guildMutedMember} a été mute \nReason : **${raisonMute}`
+    );
+
     interraction.reply(response);
   },
 };

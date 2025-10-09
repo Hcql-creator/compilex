@@ -15,6 +15,7 @@ module.exports = {
   // Description de la commande
   description:
     "Résumé de la conversation, vous pouvez aussi poser vos questions",
+  devOnly: true,
 
   // Paramètres de la commande
   options: [

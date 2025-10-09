@@ -17,6 +17,7 @@ module.exports = {
 
   // Description de la commande
   description: "Mute le membre pour la durée spécifiée",
+  devOnly: true,
 
   // Paramètres de la commande
   options: [
@@ -68,7 +69,12 @@ module.exports = {
 
     try {
       await guildMember.timeout(duree * 60 * 1000, reason); // timeout en ms
-      sendLog(interraction, "Membre tempMute", "Orange", `**${guildMember}** a été mute temporairement \nReason : ${reason}`)
+      sendLog(
+        interraction,
+        "Membre tempMute",
+        "Orange",
+        `**${guildMember}** a été mute temporairement \nReason : ${reason}`
+      );
       return interraction.reply({
         content: `✅ ${guildMember.user.tag} a été mute pendant ${duree} minutes.\nRaison : ${reason}`,
         ephemeral: false,

@@ -2,6 +2,7 @@ const geminiRequest = require("../../utils/AI/geminiRequest");
 const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
+  if (interaction.guild.id !== "1418256830890770577") return;
   const regexList = [
     /\b(putain|fdp|sale|enculé|nique ta m(ère|ere)|pd|tafiole|palestine|israel|israël|gouine|chienne|fdp|tg|ferme|connard|conard|saloppe|salope|pute|nazi|negger)\b/i,
     /\b(fuck|shit|bitch|bastard|asshole|dick|cunt|slut|whore)\b/i,

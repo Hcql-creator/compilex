@@ -27,6 +27,7 @@ module.exports = {
     PermissionFlagsBits.ManageRoles,
     PermissionFlagsBits.ModerateMembers,
   ],
+  devOnly: true,
 
   callback: async (client, interaction) => {
     console.log("1");
@@ -62,7 +63,12 @@ module.exports = {
       try {
         const MUTE_MINUTES = 40000; // ou 230 si tu veux
         await member.timeout(MUTE_MINUTES * 60 * 1000, "raison");
-        sendLog(interaction, "Avertissement", "Red", `**${member}** a été avertit (**WARN**) \nReason : ${reason}. \nC'est la troisième fois : l'utilisateur est dorénavant mute temporairement`)
+        sendLog(
+          interaction,
+          "Avertissement",
+          "Red",
+          `**${member}** a été avertit (**WARN**) \nReason : ${reason}. \nC'est la troisième fois : l'utilisateur est dorénavant mute temporairement`
+        );
         return interaction.reply({
           content: `✅ ${member.user.tag} a été mute ${MUTE_MINUTES} minutes (3ème avertissement).`,
           ephemeral: false,
@@ -77,15 +83,25 @@ module.exports = {
     }
     if (hasWarn1) {
       await member.roles.add(warn2);
-      sendLog(interaction, "Avertissement", "Red", `**${member}** a été avertit (**WARN**) \nReason : ${reason}`)
-      
+      sendLog(
+        interaction,
+        "Avertissement",
+        "Red",
+        `**${member}** a été avertit (**WARN**) \nReason : ${reason}`
+      );
+
       return interaction.reply({
         content: `✅ ${member} a été avertit une seconde fois car ${reason}. Attention, la prochaine fois c'est un mute d'un mois !`,
         ephemeral: false,
       });
     } else {
       await member.roles.add(warn1);
-      sendLog(interaction, "Avertissement", "Red", `**${member}** a été avertit \nReason : ${reason}`)
+      sendLog(
+        interaction,
+        "Avertissement",
+        "Red",
+        `**${member}** a été avertit \nReason : ${reason}`
+      );
       return interaction.reply({
         content: ` ${member} a été avertit une première fois car ${reason}.`,
         ephemeral: true,
