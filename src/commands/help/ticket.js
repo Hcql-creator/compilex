@@ -9,6 +9,7 @@ module.exports = {
   name: "ticket",
   description: "Créer un ticket privé pour répondre à vos problèmes",
   botPermissions: [PermissionFlagsBits.Administrator],
+  devOnly: true,
   callback: async (client, interraction) => {
     // Récupérer les salons commençant par "tickets" et les tri par ordre croissant
     const tickets = interraction.guild.channels.cache

@@ -11,14 +11,17 @@ const sendLog = require("../../utils/sendLog");
 module.exports = {
   // Nom de la commande
   name: "close",
-  
+
   // Description de la commande
   description: "Ferme un salon",
-  
+  devOnly: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
-  permissionsRequired: [PermissionFlagsBits.ManageChannels, PermissionFlagsBits.ManageMessages],
-  
+  permissionsRequired: [
+    PermissionFlagsBits.ManageChannels,
+    PermissionFlagsBits.ManageMessages,
+  ],
+
   // Permissions requises pour que le bot puisse éxécuter la commande
   botPermissions: [PermissionFlagsBits.Administrator],
 
@@ -26,10 +29,15 @@ module.exports = {
   callback: async (client, interraction) => {
     const salon = interraction.channel;
     try {
-    sendLog(interraction, "Salon fermé", "Yellow", `**${salon.name}** a été fermé`)
-    await salon.delete()
-} catch {
-    interraction.reply("Ca pas marché t'es con ou quoi - bg")
-}
+      sendLog(
+        interraction,
+        "Salon fermé",
+        "Yellow",
+        `**${salon.name}** a été fermé`
+      );
+      await salon.delete();
+    } catch {
+      interraction.reply("Ca pas marché t'es con ou quoi - bg");
+    }
   },
 };

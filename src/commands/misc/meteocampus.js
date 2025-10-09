@@ -21,6 +21,7 @@ module.exports = {
 
   // Description de la commande
   description: "aa",
+  devOnly: true,
 
   // Paramètres de la commande
   options: [
