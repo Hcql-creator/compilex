@@ -3,15 +3,19 @@ const modalCreator = require("../../utils/modals/modalCreator");
 const modalTextInput = require("../../utils/modals/modalTextInput");
 
 module.exports = async (client, interaction) => {
-  const modal = modalCreator("sondageNameModal", "Nom du sondage");
+  const modal = modalCreator(
+    "sondageRemoveModal",
+    "Les options à supprimer au sondage"
+  );
+
   const nameInput = modalTextInput(
-    "sondageNameTextInput",
-    "Sujet du sondage",
-    "Ex. Qui veut gagner ?",
-    "    ",
+    "sondageRemoveTextInput",
+    "Les options à supprimer au sondage",
+    "Ex. ✅",
+    "",
     TextInputStyle.Short,
     0,
-    30,
+    150,
     true
   );
 

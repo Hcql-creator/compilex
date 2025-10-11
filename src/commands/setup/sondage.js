@@ -27,38 +27,38 @@ module.exports = {
             interraction,
             "Green",
             "Creation sondage",
-            " ",
+            "  ",
         )
         const row = new ActionRowBuilder();
         row.addComponents(
             buttonCreator(
                 "sondageName",
                 "Titre",
-                "⏲️",
+                "🏷️",
                 ButtonStyle.Primary
             ),
             buttonCreator(
                 "sondageDescription",
                 "Description",
-                "⏲️",
+                "🔠",
                 ButtonStyle.Secondary
             ),
             buttonCreator(
                 "sondageAdd",
                 "AddOptions",
-                "⏲️",
+                "➕",
                 ButtonStyle.Success
             ),
             buttonCreator(
                 "sondageRemove",
                 "RemoveOptions",
-                "⏲️",
+                "➖",
                 ButtonStyle.Danger
             ),
             buttonCreator(
                 "sondageBeggin",
                 "Beggin",
-                "⏲️",
+                "✅",
                 ButtonStyle.Secondary
             ),
         

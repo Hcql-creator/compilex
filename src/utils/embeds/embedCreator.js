@@ -13,7 +13,7 @@ module.exports = (
   const embed = new EmbedBuilder()
     .setColor(color)
     .setTitle(title)
-    .setDescription(description ?? " ");
+    .setDescription(description ?? "  ");
 
   if (footer) {
     if (interaction.user) {

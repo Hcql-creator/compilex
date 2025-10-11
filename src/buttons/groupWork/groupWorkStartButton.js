@@ -2,6 +2,7 @@ const {
   PermissionFlagsBits,
   ActionRowBuilder,
   ButtonStyle,
+  ChannelType,
 } = require("discord.js");
 const embedCreator = require("../../utils/embeds/embedCreator");
 const embedField = require("../../utils/embeds/embedField");
@@ -11,16 +12,18 @@ const stringMenuBuilder = require("../../utils/selectMenus/stringMenuBuilder");
 const userMenuBuilder = require("../../utils/selectMenus/userMenuBuilder");
 
 module.exports = async (client, interaction) => {
+  const category = interaction.guild.channels.cache.find(
+          (ch) => ch.type === ChannelType.GuildCategory && ch.name === "「 Travaux de groupe ✒️」"
+        );
   const channelName = "travail-de-groupe";
   const currentChannelID = interaction.message.channelId;
   const guild = client.guilds.cache.get(interaction.guild.id);
   const parentCategory = await guild.channels.fetch(currentChannelID);
   const parentCategoryID = parentCategory.parentId;
-
   const channel = await interaction.guild.channels.create({
     name: channelName,
     type: 0,
-    parent: parentCategoryID,
+    parent: category.id, 
     permissionOverwrites: [
       // Permissions globale du serveur
       {

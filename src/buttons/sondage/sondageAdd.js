@@ -8,31 +8,18 @@ module.exports = async (client, interaction) => {
     "Les options à ajouter au sondage"
   );
 
-  const nameInput1 = modalTextInput(
-    "sondageAddTextInput1",
-    "Icone",
-    "Ex.  ✅ ",
-    interaction.message.embeds[0].description === "Creer ici votre sondage" ? "" : interaction.message.embeds[0].description,
-    TextInputStyle.Short,
-    0,
-    150,
-    true
-  );
-  console.log("1")
   const nameInput = modalTextInput(
     "sondageAddTextInput",
     "Les options à ajouter au sondage",
-    "Ex. Oui",
-    interaction.message.embeds[0].description === "Creer ici votre sondage" ? "" : interaction.message.embeds[0].description,
+    "Ex. ✅ Oui",
+    "",
     TextInputStyle.Short,
     0,
     150,
     true
   );
 
-
-  const row = new ActionRowBuilder().addComponents(nameInput1);
-  const row1 = new ActionRowBuilder().addComponents(nameInput);
-  modal.addComponents(row, row1);
+  const row = new ActionRowBuilder().addComponents(nameInput);
+  modal.addComponents(row);
   await interaction.showModal(modal);
 };

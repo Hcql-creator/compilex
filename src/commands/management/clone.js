@@ -53,8 +53,11 @@ permissionsRequired: [PermissionFlagsBits.ManageMessages, PermissionFlagsBits.Ma
     sendLog(interaction, "Salon Duppliqué", "Green", `**${nom}** a été duppliqué !`)
     await newSalon.send("✅ Salon crée");
     if (interaction.options.getBoolean("effacer")){
-        await salon.delete().catch(err => console.error(err));
+        return salon.delete().catch(err => console.error(err));
     }
-  },
+    else{
+      salon.send("✅ Clonnage terminé")
+    }
+    },
   
 };

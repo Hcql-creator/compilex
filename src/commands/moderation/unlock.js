@@ -23,12 +23,12 @@ module.exports = {
     // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
      callback: async (client, interaction) => {
         const roleEtudiant = interaction.guild.roles.cache.find(
-            (role) => role.name === "etudiant"
+            (role) => role.name === "💼・Etudiants"
         );
 
         if (!roleEtudiant) {
             return interaction.reply({
-                content: "⚠️ Le rôle **etudiant** n'existe pas sur ce serveur.",
+                content: `⚠️ Le rôle **${roleEtudiant}** n'existe pas sur ce serveur.`,
                 ephemeral: true,
             });
         }

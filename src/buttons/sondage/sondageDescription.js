@@ -11,9 +11,9 @@ module.exports = async (client, interaction) => {
     "sondageDescriptionTextInput",
     "Description du sondage",
     "Ex. 1. Qui veut gagner ?",
-    interaction.message.embeds[0].description,
+    interaction.message.embeds[0].description || "",
     TextInputStyle.Paragraph,
-    10,
+    0,
     500,
     true
   );
