@@ -17,6 +17,7 @@ module.exports = {
 
   // Description de la commande
   description: "Permet d'expulser un membre",
+  devOnly: true,
 
   // Paramètres de la commande
   options: [
@@ -62,8 +63,13 @@ module.exports = {
       interraction.options.getString("raison") ?? "Aucune raison spécifiée";
     try {
       // Commande Kick
-      sendLog(interraction, "Membre kick", "Red", `**${guildKickedMember}** a été kick \nReason : ${kickReason}`)
-      
+      sendLog(
+        interraction,
+        "Membre kick",
+        "Red",
+        `**${guildKickedMember}** a été kick \nReason : ${kickReason}`
+      );
+
       await guildKickedMember.kick(kickReason);
       response = "Membre explusé avec succès";
     } catch (error) {

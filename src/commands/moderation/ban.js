@@ -48,11 +48,11 @@ module.exports = {
   ],
   permissionsRequired: [PermissionFlagsBits.BanMembers],
   botPermissions: [PermissionFlagsBits.BanMembers],
-
+  devOnly: true,
   callback: async (client, interaction) => {
-
     const bannedUser = interaction.options.getUser("utilisateur");
-    const reason = interaction.options.getString("raison") ?? "Aucune raison fournie";
+    const reason =
+      interaction.options.getString("raison") ?? "Aucune raison fournie";
 
     // Créatrion de l'embed (qui ma casser les couilles :(D  )
     const confirmEmbed = createEmbed(
@@ -74,7 +74,7 @@ module.exports = {
       ephemeral: true,
     });
 
-    // merci chatgpt pour cette partie  
+    // merci chatgpt pour cette partie
     const filter = (i) =>
       i.user.id === interaction.user.id &&
       ["confirm_ban", "cancel_ban"].includes(i.customId);
@@ -96,9 +96,9 @@ module.exports = {
       }
 
       if (i.customId === "confirm_ban") {
-
         const guildBannedMember = interaction.options.getMember("utilisateur");
-        const deleteChoice = interaction.options.getString("supprimer_messages") ?? "0";
+        const deleteChoice =
+          interaction.options.getString("supprimer_messages") ?? "0";
 
         if (!guildBannedMember) {
           return i.update({
@@ -141,22 +141,31 @@ module.exports = {
             interaction,
             "Green",
             "✅ Bannissement effectué",
-            `${bannedUser.tag} a été banni.\n**Raison** : ${reason}\n🗑️ **Messages supprimés** : ${deleteChoice === "0"
-              ? "Aucun"
-              : deleteChoice === "all"
+            `${
+              bannedUser.tag
+            } a été banni.\n**Raison** : ${reason}\n🗑️ **Messages supprimés** : ${
+              deleteChoice === "0"
+                ? "Aucun"
+                : deleteChoice === "all"
                 ? "Tous (7 jours max)"
                 : `${deleteMessageSeconds / 3600}h`
             }`
           );
-          sendLog(interaction, "Bannissement", "Red", `**${bannedUser.tag}** a été banni \n**Raison** : ${reason}\n🗑️ **Messages supprimés** : ${deleteChoice === "0"
-              ? "Aucun"
-              : deleteChoice === "all"
+          sendLog(
+            interaction,
+            "Bannissement",
+            "Red",
+            `**${
+              bannedUser.tag
+            }** a été banni \n**Raison** : ${reason}\n🗑️ **Messages supprimés** : ${
+              deleteChoice === "0"
+                ? "Aucun"
+                : deleteChoice === "all"
                 ? "Tous (7 jours max)"
                 : `${deleteMessageSeconds / 3600}h`
-            }`)
+            }`
+          );
           return i.update({ embeds: [successEmbed], components: [] });
-          
-
         } catch (error) {
           console.error("Erreur:", error);
           return i.update({
@@ -166,6 +175,5 @@ module.exports = {
         }
       }
     });
-
   },
 };

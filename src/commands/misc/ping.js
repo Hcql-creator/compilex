@@ -3,6 +3,7 @@ module.exports = {
 
   // Description de la commande
   description: "Répond pong avec la latence en ms.",
+  devOnly: true,
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {

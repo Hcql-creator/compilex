@@ -1,10 +1,10 @@
 const {
-    // Si la commande requiert des paramètres
-    ApplicationCommandOptionType,
+  // Si la commande requiert des paramètres
+  ApplicationCommandOptionType,
 
-    // Si la commande requiert des permissions pour être utilisée par l'utilisateur **OU** Si le bot à besoin de permission pour
-    // éxécuter la commande
-    PermissionFlagsBits,
+  // Si la commande requiert des permissions pour être utilisée par l'utilisateur **OU** Si le bot à besoin de permission pour
+  // éxécuter la commande
+  PermissionFlagsBits,
 } = require("discord.js");
 const log = require("../../utils/sendLog");
 const sendLog = require("../../utils/sendLog");

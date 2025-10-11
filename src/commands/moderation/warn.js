@@ -27,6 +27,7 @@ module.exports = {
     PermissionFlagsBits.ManageRoles,
     PermissionFlagsBits.ModerateMembers,
   ],
+  devOnly: true,
 
   callback: async (client, interaction) => {
     console.log("1");
@@ -85,7 +86,12 @@ module.exports = {
       });
     } else {
       await member.roles.add(warn1);
-      sendLog(interaction, "Avertissement", "Red", `**${member}** a été avertit \nReason : ${reason}`)
+      sendLog(
+        interaction,
+        "Avertissement",
+        "Red",
+        `**${member}** a été avertit \nReason : ${reason}`
+      );
       return interaction.reply({
         content: ` ${member} a été avertit une première fois car ${reason}.`,
         ephemeral: true,

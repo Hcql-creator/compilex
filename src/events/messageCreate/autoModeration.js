@@ -2,8 +2,9 @@ const geminiRequest = require("../../utils/AI/geminiRequest");
 const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
+  if (interaction.guild.id !== "1418256830890770577") return;
   const regexList = [
-    /\b(putain|fdp|enculé|nique ta m(ère|ere)|pd|tafiole|gouine|chienne|fdp|tg|ferme|connard|conard|saloppe|salope|pute|nazi|negger|tg|ta gueule)\b/i,
+    /\b(putain|fdp|sale|enculé|nique ta m(ère|ere)|pd|tafiole|palestine|israel|israël|gouine|chienne|fdp|tg|ferme|connard|conard|saloppe|salope|pute|nazi|negger)\b/i,
     /\b(fuck|shit|bitch|bastard|asshole|dick|cunt|slut|whore)\b/i,
     /\b(nigg(a|er)s?|youpin|raton|bougnoule|chinetoque|bicot|fag(got)?|butt|suck|pornhub)\b/i,
     /\b(porno?|xnxx|xvideos|redtube|onlyfans?|camgirl|sex|cum|milf|anal|bdsm|suce|fe(ll | l)ation|bitch)\b/i,
@@ -13,7 +14,7 @@ module.exports = async (client, interaction) => {
     /(.)\1{5,}/i,
   ];
 
-  let geminiResponse;
+  let geminiResponse = "";
   for (const regex of regexList) {
     if (interaction.content.toLowerCase().match(regex)) {
       const userInfos = `${
@@ -26,9 +27,8 @@ module.exports = async (client, interaction) => {
       break;
     }
   }
-
-  if (geminiResponse === "true") {
-    sendLog(interaction, "Auto-Modération", "Red", `Le message envoyé par ${interaction.author.tag} a été détecté comme insultant ou inaproprié : \nMessage : **${interaction.content}**`)
+  console.log("Intra gemini response:", geminiResponse);
+  if (geminiResponse === "true" || geminiResponse.includes("true")) {
     console.log("Deleted Message");
     await interaction.delete();
     interaction.channel.send(
