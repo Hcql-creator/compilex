@@ -61,8 +61,12 @@ module.exports = {
       `**${nom}** a été duppliqué !`
     );
     await newSalon.send("✅ Salon crée");
-    if (interaction.options.getBoolean("effacer")) {
-      await salon.delete().catch((err) => console.error(err));
+    if (interaction.options.getBoolean("effacer")){
+        return salon.delete().catch(err => console.error(err));
     }
-  },
+    else{
+      salon.send("✅ Clonnage terminé")
+    }
+    },
+  
 };

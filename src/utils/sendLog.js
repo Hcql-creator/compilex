@@ -2,7 +2,7 @@ const createEmbed = require("../utils/embeds/embedCreator");
 
 // Fonction réutilisable
 module.exports = async (interaction, title, color, embedContent = '') => {
-    const channelID = "1422852024281862155"; 
+    const channelID = "1418257636024913951"; 
     const guild = interaction.guild;
     let logChannel = guild.channels.cache.get(channelID);
     let user;
