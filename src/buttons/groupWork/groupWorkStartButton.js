@@ -2,6 +2,7 @@ const {
   PermissionFlagsBits,
   ActionRowBuilder,
   ButtonStyle,
+  ChannelType,
 } = require("discord.js");
 const embedCreator = require("../../utils/embeds/embedCreator");
 const embedField = require("../../utils/embeds/embedField");
@@ -11,7 +12,9 @@ const stringMenuBuilder = require("../../utils/selectMenus/stringMenuBuilder");
 const userMenuBuilder = require("../../utils/selectMenus/userMenuBuilder");
 
 module.exports = async (client, interaction) => {
-  // Le salon s'appelera par défaut "travail-de-groupe"
+  const category = interaction.guild.channels.cache.find(
+          (ch) => ch.type === ChannelType.GuildCategory && ch.name === "「 Travaux de groupe ✒️」"
+        );
   const channelName = "travail-de-groupe";
 
   // On récupère l'ID du salon actuel
@@ -28,7 +31,7 @@ module.exports = async (client, interaction) => {
   const channel = await interaction.guild.channels.create({
     name: channelName,
     type: 0,
-    parent: parentCategoryID,
+    parent: category.id, 
     permissionOverwrites: [
       // Permissions globale du serveur
       {

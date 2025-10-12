@@ -77,5 +77,9 @@ module.exports = {
       // On supprime le salon initial
       await salon.delete().catch((err) => console.error(err));
     }
-  },
+    else{
+      salon.send("✅ Clonnage terminé")
+    }
+    },
+  
 };

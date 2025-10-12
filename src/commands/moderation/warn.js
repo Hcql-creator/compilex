@@ -63,7 +63,7 @@ module.exports = {
     // Sanction si l'utilisateur à déjà été warn 2 fois
     if (hasWarn2) {
       try {
-        const MUTE_MINUTES = 40000; // ou 230 si tu veux
+        const MUTE_MINUTES = 33600; // ou 230 si tu veux
         await member.timeout(MUTE_MINUTES * 60 * 1000, "raison");
 
         // On log l'action dans le salon adéquat
