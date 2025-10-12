@@ -1,3 +1,5 @@
+const { PermissionFlagsBits } = require("discord.js");
+
 module.exports = async (client, channel) => {
   const roleCollection = await channel.guild.roles.fetch();
   const roles = Array.from(roleCollection.values());
@@ -19,6 +21,13 @@ module.exports = async (client, channel) => {
       hoist: true,
       mentionable: false,
       permissions: [],
+      deny: [
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.CreatePublicThreads,
+        PermissionFlagsBits.CreatePrivateThreads,
+        PermissionFlagsBits.ManageThreads,
+        PermissionFlagsBits.Connect,
+      ],
     });
   } else {
     mutedRole = mutedRoles[0];
@@ -29,6 +38,10 @@ module.exports = async (client, channel) => {
     await channel.permissionOverwrites.edit(mutedRole, {
       SendMessages: false,
       ViewChannel: true,
+      CreatePublicThreads: false,
+      CreatePrivateThreads: false,
+      ManageThreads: false,
+      Connect: false,
     });
   } catch (error) {
     response = "Erreur lors de la modification des permissioons";

@@ -50,11 +50,14 @@ module.exports = {
   botPermissions: [PermissionFlagsBits.BanMembers],
   devOnly: true,
   callback: async (client, interaction) => {
+    // On récupère l'utilisateur à bannir
     const bannedUser = interaction.options.getUser("utilisateur");
+
+    // On récupère la raison du bannissement
     const reason =
       interaction.options.getString("raison") ?? "Aucune raison fournie";
 
-    // Créatrion de l'embed (qui ma casser les couilles :(D  )
+    // Création de l'embed (qui ma casser les couilles :(D  )
     const confirmEmbed = createEmbed(
       interaction,
       "Red",
@@ -74,7 +77,7 @@ module.exports = {
       ephemeral: true,
     });
 
-    // merci chatgpt pour cette partie
+    // A REFAIRE AVEC LE NOUVEAU SYSTEME
     const filter = (i) =>
       i.user.id === interaction.user.id &&
       ["confirm_ban", "cancel_ban"].includes(i.customId);
@@ -100,6 +103,7 @@ module.exports = {
         const deleteChoice =
           interaction.options.getString("supprimer_messages") ?? "0";
 
+        // On vérifie si l'utilisateur mentionné existe
         if (!guildBannedMember) {
           return i.update({
             content: "❌ Impossible de trouver ce membre.",
@@ -107,11 +111,19 @@ module.exports = {
           });
         }
 
+        // On vérifie si l'utilisateur mentionné appartient bien au serveur
         if (!isGuildMember(interaction, bannedUser)) return;
+
+        // On vérifie que la personne éxécutant la commande ait un role plus haut que celui sur lequel la commande est éxécutée
         if (await userHasLowerRoleThan(interaction, guildBannedMember)) return;
+
+        // On vérifie que la personne n'esssaye pas de se bannir lui même
         if (isUsingCommandOnHimself(interaction, bannedUser)) return;
+
+        // On vérifie que l'on essaye pas de bannir le bot lui même
         if (isBotTargetingHimself(client, interaction, bannedUser)) return;
 
+        // On vérifie que le membre est banissable
         if (!guildBannedMember.bannable) {
           return i.update({
             content: "❌ Je ne peux pas bannir ce membre (rôle trop haut).",
@@ -120,7 +132,7 @@ module.exports = {
         }
 
         try {
-          // envoyer un message au banni
+          // On envoi un message au banni en DM
           try {
             await bannedUser.send(
               `🚫 Vous avez été banni de **${interaction.guild.name}**.\nRaison : ${reason}`
@@ -129,6 +141,7 @@ module.exports = {
             console.log(`${bannedUser.tag} ne peut pas recevoir de DM.`);
           }
 
+          // ??? A EXPLIQUER
           let deleteMessageSeconds =
             deleteChoice === "all" ? 604800 : parseInt(deleteChoice, 10);
 
@@ -137,6 +150,7 @@ module.exports = {
             deleteMessageSeconds,
           });
 
+          // On créer l'embed
           const successEmbed = createEmbed(
             interaction,
             "Green",
@@ -151,6 +165,8 @@ module.exports = {
                 : `${deleteMessageSeconds / 3600}h`
             }`
           );
+
+          // On envoie un log dans le salon Logs
           sendLog(
             interaction,
             "Bannissement",
@@ -165,6 +181,8 @@ module.exports = {
                 : `${deleteMessageSeconds / 3600}h`
             }`
           );
+
+          // On envoie l'embed
           return i.update({ embeds: [successEmbed], components: [] });
         } catch (error) {
           console.error("Erreur:", error);

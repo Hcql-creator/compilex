@@ -1,5 +1,6 @@
 const blankEmbedField = require("../../utils/embeds/blankEmbedField");
 const embedCreator = require("../../utils/embeds/embedCreator");
+const linkButtonCreator = require("../../utils/buttonCreators/linkButtonCreator");
 
 const convertFarenheightToCelsius = (temp) => {
   return (temp - 32) * (5 / 9);
@@ -12,6 +13,7 @@ const {
   // Si la commande requiert des permissions pour être utilisée par l'utilisateur **OU** Si le bot à besoin de permission pour
   // éxécuter la commande
   PermissionFlagsBits,
+  ActionRowBuilder,
 } = require("discord.js");
 const embedField = require("../../utils/embeds/embedField");
 
@@ -69,14 +71,17 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
+    // On récupère le jour (et l'heure) dont l'utilisateur souhaite connaitre la météo
     const weatherDay = interraction.options.getString("jour");
     const specifiedHour = interraction.options.getString("heure");
-    console.log(specifiedHour);
+
+    // On récupère le jour et l'heure actuelle
     // 0 = Sunday | 1 = Monday ...
     let rawCurrentDay = new Date().getDay();
     let rawCurrentHour = new Date().getHours();
-    console.log("Raw Current Hour", rawCurrentHour);
-    console.log("Specified Hour", parseInt(specifiedHour));
+
+    // On calcule l'indice auquel on doit se rendre dans le résultat de la requête API pour le jours (et les heures)
+    // Pour les heures, l'indice retourné est celui du début (heure 1), il faut donc prendre l'élément en position index et index + 1
     const requestCurrentDayIndex = Math.abs(
       parseInt(weatherDay) < rawCurrentDay
         ? 7 - rawCurrentDay + parseInt(weatherDay)
@@ -88,12 +93,18 @@ module.exports = {
         : parseInt(specifiedHour) - rawCurrentHour
     );
 
-    if (requestHourRangeStartIndex + 1 >= 12) {
+    // On revoie une erreur si l'heure demandée est dans plus de 12h
+    if (
+      specifiedHour &&
+      (requestHourRangeStartIndex + 1 >= 12 || requestCurrentDayIndex != 0)
+    ) {
       await interraction.reply(
         "Impossible de charger une météo plus de 12h à l'avance"
       );
       return;
     }
+
+    // On renvoie une erreur si le jour demandé est dans plus de 5 jours
     if (requestCurrentDayIndex > 5) {
       await interraction.reply(
         "Impossible de cahrger une météo plus de 5 jours à l'avance"
@@ -101,16 +112,16 @@ module.exports = {
       return;
     }
 
-    console.log("Continued");
-    console.log("DAY INDEX:", requestCurrentDayIndex);
-
-    console.log("HOUR INDEX:", requestHourRangeStartIndex);
+    // On défini la requête API (en fonction de si l'heure est spécifiée)
     const weatherURL = !specifiedHour
       ? "https://dataservice.accuweather.com/forecasts/v1/daily/5day/131928"
       : "https://dataservice.accuweather.com/forecasts/v1/hourly/12hour/131928";
+
+    // On défini la requête API pour l'image satellite sur le site de Gradignan
     const radarURL =
       "https://dataservice.accuweather.com/imagery/v1/maps/radsat/1024x1024/131928";
-    console.log(weatherURL);
+
+    // On défini les options pour notre requête API (headers)
     const options = {
       method: "GET",
       headers: {
@@ -119,59 +130,57 @@ module.exports = {
       },
     };
 
+    // On défini nos variables pour stocker les résultats API
     let APIData;
     let imageryURL;
     let weatherLinkURL;
+
+    // On récupère les données API
     await fetch(weatherURL, options)
       .then((response) => {
+        // En cas d'erreur
         if (!response.ok) {
           console.log("Error: status ->", response.status);
           throw new Error("Error while fetching weather data");
         }
-        console.log("Response is OK");
+
+        // On rend le résultat de la requête exploitable
         return response.json();
       })
       .then((data) => {
+        // On stocke le résulat dans nos variables
         APIData = data;
-        console.log(APIData[requestCurrentDayIndex]);
+
+        // A FAIRE -> IMPLÉMENTATION LIEN
         //weatherLinkURL = data.Headline.Link;
-        // console.log("Link:", weatherLinkURL);
       })
       .catch((error) => {
+        // En cas d'erreur
         console.error("Error while fetching data", error);
       });
 
+    // On récupère l'image satellite
     await fetch(radarURL, options)
       .then((response) => {
+        // En cas d'erreur
         if (!response.ok) {
           console.log("Error: status ->", response.status);
           throw new Error("Error while fetching radar data");
         }
-        console.log("Response is OK");
+
+        // On rend le résultat de la requête exploitable
         return response.json();
       })
       .then((data) => {
+        // On stocke le résultat de notre requête dans nos variables
         imageryURL = data.Satellite.Images[0].Url;
-        console.log(APIData[requestCurrentDayIndex]);
-        //weatherLinkURL = data.Headline.Link;
-        // console.log("Link:", weatherLinkURL);
       })
       .catch((error) => {
+        // En cas d'erreur
         console.error("Error while fetching data", error);
       });
 
-    console.log("--- FORECAST ---");
-    if (specifiedHour) {
-      console.log(
-        APIData.slice(
-          requestHourRangeStartIndex,
-          requestHourRangeStartIndex + 2
-        )
-      );
-    } else {
-      console.log(APIData.DailyForecasts[requestCurrentDayIndex]);
-    }
-
+    // On convertit le résultat du jour actuel (0-6) en chaîne de caractères
     let weatherStringDay;
     switch (weatherDay) {
       case "1":
@@ -193,22 +202,39 @@ module.exports = {
         weatherStringDay = "Erreur";
         break;
     }
+
+    // On défini la description de notre embed en fonction de si une heure est passée en paramètres
     const embedDescription = specifiedHour
       ? `Prévisions météos sur le campus pour la journée de ${weatherStringDay} dans la plage horraire ${specifiedHour}h00 à ${
           parseInt(specifiedHour) + 2
         }h00.`
       : `Prévisions météo pour la journée de ${weatherStringDay}.`;
 
+    // On défini nos variables pour notre embed
     let embed;
+
+    // Chemin vers l'icone du thumbnail
     let filePath;
+
+    // Numéro d'icone pour le thumbnail
     let iconNumber;
+
+    // Embed spécifique si une heure est passée en paramètres
     if (specifiedHour) {
+      // On défini le lien vers les informations complémentaires
+      weatherLinkURL = APIData[requestHourRangeStartIndex].Link;
+
+      // On récupère le numéro d'icone
       iconNumber = APIData[requestHourRangeStartIndex].WeatherIcon;
+
+      // On récupère le chemin vers notre icone
       const path = require("path");
       filePath = path.join(
         __dirname,
         `../../../assets/weatherIcons/${iconNumber}.png`
       );
+
+      // On créer notre embed
       embed = embedCreator(
         interraction,
         "#0000FF",
@@ -217,6 +243,7 @@ module.exports = {
         `attachment://${iconNumber}.png`,
         imageryURL
       ).addFields(
+        // On ajoute nos Champs
         blankEmbedField(),
         embedField(
           "Durée de la prévision",
@@ -246,12 +273,22 @@ module.exports = {
         blankEmbedField()
       );
     } else {
+      // Si aucune heure fournie
+
+      // On défini le lien vers la page météo
+      weatherLinkURL = APIData.DailyForecasts[requestCurrentDayIndex].Link;
+
+      // On récupère le numéro d'icone
       iconNumber = APIData.DailyForecasts[requestCurrentDayIndex].Day.Icon;
+
+      // On récupère le chemin vers notre icone
       const path = require("path");
       filePath = path.join(
         __dirname,
         `../../../assets/weatherIcons/${iconNumber}.png`
       );
+
+      // On créer notre embed
       embed = embedCreator(
         interraction,
         "#0000FF",
@@ -260,6 +297,7 @@ module.exports = {
         `attachment://${iconNumber}.png`,
         imageryURL
       ).addFields(
+        // On ajoute nos champs
         blankEmbedField(),
         embedField("Durée de la prévision", `Journée entière`, true),
         embedField(
@@ -297,9 +335,17 @@ module.exports = {
       );
     }
 
+    // On créer notre ligne de composants
+    const row = new ActionRowBuilder();
+
+    // On ajoute notre lien vers le site météo
+    row.addComponents(linkButtonCreator("", "Plus de détails", weatherLinkURL));
+
+    // On envoie notre embed en lui passant notre image thumbnail
     interraction.reply({
       content: "",
       embeds: [embed],
+      components: [row],
       files: [filePath],
     });
   },

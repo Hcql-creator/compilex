@@ -43,22 +43,29 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
+    // On récupère le membre
     const kickedMember = interraction.options.getUser("membre");
     const guildKickedMember = interraction.options.getMember("membre");
 
+    // On vérifie si l'utilisateur mentionné appartient bien au serveur
     if (!isGuildMember(interraction, kickedMember)) return;
 
     if (isBotTargetingHimself(client, interraction, kickedMember)) return;
 
+    // On vérifie que la personne n'esssaye pas de se bannir lui même
     if (isUsingCommandOnHimself(interraction, kickedMember)) return;
 
+    // On vérifie que la personne éxécutant la commande ait un role plus haut que celui sur lequel la commande est éxécutée
     if (await userHasLowerRoleThan(interraction, guildKickedMember)) return;
 
+    // On vérifie que le membre est kickable
     if (!guildKickedMember.kickable) {
       return interraction.reply("Cet utilisateur n'est pas expulsable");
     }
 
     let response;
+
+    // On récupère la raison du kick
     const kickReason =
       interraction.options.getString("raison") ?? "Aucune raison spécifiée";
     try {
@@ -70,6 +77,7 @@ module.exports = {
         `**${guildKickedMember}** a été kick \nReason : ${kickReason}`
       );
 
+      // On expulse le membre et on prépare la réponse
       await guildKickedMember.kick(kickReason);
       response = "Membre explusé avec succès";
     } catch (error) {

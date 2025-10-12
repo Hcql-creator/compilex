@@ -11,7 +11,10 @@ module.exports = {
   botPermissions: [PermissionFlagsBits.Administrator],
   devOnly: true,
   callback: async (client, interraction) => {
-    // Récupérer les salons commençant par "tickets" et les tri par ordre croissant
+    // On récupère la catégorie contenant les Tickets
+    const ticketCategoryID = "1418263721582526655";
+
+    // Récupérer les salons commençant par "ticket" et les tri par ordre croissant
     const tickets = interraction.guild.channels.cache
       .filter((channel) => channel.name.startsWith("ticket"))
       .sort((a, b) =>
@@ -30,6 +33,7 @@ module.exports = {
     const channel = await interraction.guild.channels.create({
       name: ticketName,
       type: 0,
+      parent: ticketCategoryID,
       permissionOverwrites: [
         // Permissions globale du serveur
         {
@@ -50,6 +54,7 @@ module.exports = {
       ],
     });
 
+    // Informe l'utilisateur que le ticket à bien été créer
     await interraction.reply({
       content: `➕ Salon ticket crée dans ${channel}`,
       ephemeral: true,

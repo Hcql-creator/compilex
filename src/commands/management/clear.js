@@ -34,14 +34,24 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
+    // On récupère le nombre de tickets saisis par l'utilisateur
     let a = interraction.options.getInteger("nombre");
+
+    // Si le nombre de messages à supprimer est supérieur ou égal à 100
     if (a >= 100) {
+      // On supprime tous les messages via bulkDelete jusqu'a ce qu'il reste un nombre de messages à supprimer < 100
       for (let i = 1; i < a / 100; i += 1) {
         await interraction.channel.bulkDelete(100, true);
       }
     }
-    (a = interraction.options.getInteger("nombre") % 100),
-      await interraction.channel.bulkDelete(a, true);
+
+    // On récupère le nombre de messages restant à supprimer
+    a = interraction.options.getInteger("nombre") % 100;
+
+    // On supprime les messages restants
+    await interraction.channel.bulkDelete(a, true);
+
+    // On envoie un log de cette suppression
     sendLog(
       interraction,
       "Messages Effacés",
@@ -52,6 +62,8 @@ module.exports = {
         "nombre"
       )}** messages ont été effacés`
     );
+
+    // On informe l'utilisateur que les messages ont bien étés supprimés
     return interraction.reply({
       content: "Messages effacés avec succès !",
       ephemeral: true,

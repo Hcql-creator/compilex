@@ -1,24 +1,27 @@
 module.exports = async (client, reaction, user) => {
-  const messageID = "1420759078183112766";
+  const messageID = "1426935540296712273";
   if (!(reaction.message.id === messageID)) return;
   if (reaction.partial) reaction = await reaction.fetch();
   const guild = reaction.message.guild;
   const guildUser = await guild.members.fetch(user.id);
   // Ajout des roles
-  const roleID1 = "1420466445749325844";
-  const roleID2 = "1420466496722698413";
-  const roleID3 = "1420466535536791644";
+  const roleS1A = "1426932123423735970";
+  const roleS1B = "1426932191484444883";
+  const roleS1C = "1426932253346365491";
+  const roleS1D = "1426932290373812296";
   try {
     switch (reaction.emoji.name) {
-      case "❌":
-        guildUser.roles.add(roleID1);
+      case "🅰️":
+        guildUser.roles.add(roleS1A);
         break;
-      case "⚠️":
-        guildUser.roles.add(roleID2);
+      case "🅱️":
+        guildUser.roles.add(roleS1B);
         break;
-      case "✅":
-        guildUser.roles.add(roleID3);
+      case "©":
+        guildUser.roles.add(roleS1C);
         break;
+      case "🎲":
+        guildUser.roles.add(roleS1D);
       default:
         console.log("Réaction Inconnue");
     }

@@ -5,8 +5,9 @@ module.exports = {
   devOnly: true,
 
   callback: (client, interraction) => {
+    // On indique la direction du salon #tickets à l'utilisateur
     interraction.reply(
-      `📩 Direction le salon <#1419256057666080798> pour obtenir de l'aide.`
+      `📩 Direction le salon <#1418275243310448661> pour obtenir de l'aide.`
     );
   },
 };

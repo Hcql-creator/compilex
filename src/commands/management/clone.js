@@ -37,31 +37,45 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interaction) => {
+    // On récupère le salon ou l'interaction à eu lieu
     const salon = interaction.channel;
 
+    // On copie les permissions du salon actuel
     const overwrites = salon.permissionOverwrites.cache.map((o) => ({
       id: o.id,
       allow: o.allow,
       deny: o.deny,
       type: o.type,
     }));
+
+    // On récupère la catégorie du salon parent
     const parentId = salon.parentId;
+
+    // On récupère le nom du salon
     const nom = salon.name;
 
+    // On créer notre nouveau salon avec les mêmes permissions
     const newSalon = await interaction.guild.channels.create({
       name: nom,
       type: 0,
       parent: parentId || null,
       permissionOverwrites: overwrites,
     });
+
+    // On envoie un log récapitulatif de l'action
     sendLog(
       interaction,
       "Salon Duppliqué",
       "Green",
       `**${nom}** a été duppliqué !`
     );
-    await newSalon.send("✅ Salon crée");
+
+    // Informe l'utilisateur du succès de la commande
+    await newSalon.send("✅ Salon Cloné");
+
+    // Si l'utilisateur souhaite supprimer le salon initial
     if (interaction.options.getBoolean("effacer")) {
+      // On supprime le salon initial
       await salon.delete().catch((err) => console.error(err));
     }
   },

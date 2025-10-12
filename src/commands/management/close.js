@@ -27,15 +27,20 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
+    // On récupère le salon actuel
     const salon = interraction.channel;
+
     try {
+      // On supprime le salon actuel
+      await salon.delete();
+
+      // On envoie un log récapitulatif de l'action
       sendLog(
         interraction,
         "Salon fermé",
         "Yellow",
         `**${salon.name}** a été fermé`
       );
-      await salon.delete();
     } catch {
       interraction.reply("Ca pas marché t'es con ou quoi - bg");
     }

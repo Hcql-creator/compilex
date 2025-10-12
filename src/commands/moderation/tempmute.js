@@ -51,12 +51,17 @@ module.exports = {
   callback: async (client, interraction) => {
     // Récupérer le membre à mute
     const guildMember = interraction.options.getMember("membre");
+
+    // On vérifie si l'utilisateur mentionné appartient bien au serveur
     if (!isGuildMember) return;
 
+    // On vérifie que la personne éxécutant la commande ait un role plus haut que celui sur lequel la commande est éxécutée
     if (await userHasLowerRoleThan(interraction, guildMember)) return;
 
-    // Vérifier la durée
+    // Récupérer la durée
     const duree = interraction.options.getInteger("duree");
+
+    // Vérifier que la durée est valide
     if (!duree || duree <= 0) {
       return interraction.reply({
         content: "❌ Tu dois indiquer une durée valide en minutes.",
@@ -64,10 +69,12 @@ module.exports = {
       });
     }
 
+    // On récupère la raison du mute
     const reason =
       interraction.options.getString("raison") || "Aucune raison spécifiée";
 
     try {
+      // On applique le timeout
       await guildMember.timeout(duree * 60 * 1000, reason); // timeout en ms
       sendLog(
         interraction,
@@ -75,6 +82,7 @@ module.exports = {
         "Orange",
         `**${guildMember}** a été mute temporairement \nReason : ${reason}`
       );
+
       return interraction.reply({
         content: `✅ ${guildMember.user.tag} a été mute pendant ${duree} minutes.\nRaison : ${reason}`,
         ephemeral: false,

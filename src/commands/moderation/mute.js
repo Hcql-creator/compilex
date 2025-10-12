@@ -56,7 +56,6 @@ module.exports = {
     const mutedRoles = roles.filter((role) => role.name === "Muted");
 
     // Vérifier si un et un seul role "Muted" existe
-
     // Si plus de 1 role
     if (mutedRoles.length > 1)
       return interraction.reply(
@@ -65,22 +64,10 @@ module.exports = {
 
     // Si le role Muted n'existe pas
     let mutedRole;
-    if (mutedRoles.length === 0) {
-      mutedRole = await interraction.guild.roles.create({
-        name: "Muted",
-        colors: 0x808080,
-        // Afficher séparément des autres
-        hoist: true,
-        mentionable: false,
-        permissions: [],
-      });
-      await guildMutedMember.roles.add(mutedRole);
-    } else {
-      mutedRole = mutedRoles[0];
-    }
-    // Sinon on lui ajoute le role
+    mutedRole = mutedRoles[0];
     let response = "";
     try {
+      // On donne le role a l'utilisateur
       await guildMutedMember.roles.add(mutedRole);
       response = `✅ Membre mute avec succès /nRaison : ${raisonMute}`;
     } catch (error) {
@@ -95,6 +82,8 @@ module.exports = {
         ViewChannel: true,
       });
     }
+
+    // On log l'action dans le salon dédié
     sendLog(
       interraction,
       "Mute",

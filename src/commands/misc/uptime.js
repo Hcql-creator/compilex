@@ -31,11 +31,16 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: (client, interraction) => {
+    // On récupère l'uptime du bot (en ms)
     const uptimeMS = client.uptime;
+
+    // On converti l'uptime en différentes unités
     const uptimeS = Math.floor(uptimeMS / 1000);
     const uptimeM = Math.floor(uptimeS / 60);
     const uptimeH = Math.floor(uptimeM / 60);
     const uptimeD = Math.floor(uptimeH / 24);
+
+    // En fonction de l'unité la plus propice on défini la réponse finale
     let finalResponse;
     if (uptimeS > 0) finalResponse = `${uptimeS} secondes.`;
     if (uptimeM > 0) finalResponse = `${uptimeM} minutes.`;

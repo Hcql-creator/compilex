@@ -24,10 +24,12 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interaction) => {
+    // On cherche les roles étudiants dans le serveur
     const roleEtudiant = interaction.guild.roles.cache.find(
       (role) => role.name === "etudiant"
     );
 
+    // On vérifie qu'au moins un role à ce nom
     if (!roleEtudiant) {
       return interaction.reply({
         content: "⚠️ Le rôle **etudiant** n'existe pas sur ce serveur.",
@@ -35,9 +37,11 @@ module.exports = {
       });
     }
 
+    // On récupère le salon
     const salon = interaction.channel;
 
     try {
+      // On modifie les permissions de salon
       await salon.permissionOverwrites.edit(roleEtudiant, {
         SendMessages: false,
         ViewChannel: true,
@@ -46,6 +50,8 @@ module.exports = {
       await interaction.reply({
         content: `🔒 Le salon **${salon.name}** a été verrouillé pour le rôle **${roleEtudiant.name}**.`,
       });
+
+      // On log l'action dans le salon dédié
       sendLog(
         interaction,
         "Salon verouillé",
