@@ -8,16 +8,22 @@ module.exports = async (client, interaction) => {
     .toJSON();
 
   // Génère le nouveau numéro de ticket
-  const newTicketNumber =
-    parseInt(tickets[tickets.length - 1].name.split("t").pop()) + 1;
+  let newTicketNumber;
+  if (tickets[tickets.length - 1]) {
+    newTicketNumber =
+      parseInt(tickets[tickets.length - 1].name.split("t").pop()) + 1;
+  } else {
+    newTicketNumber = 1;
+  }
 
   // Défini le nom du ticket
   const ticketName = `ticket${String(newTicketNumber).padStart(3, "0")}`;
 
-  // Créer le ticker
+  // Créer le ticket
   const channel = await interaction.guild.channels.create({
     name: ticketName,
     type: 0,
+    parent: "1418263721582526655",
     permissionOverwrites: [
       // Permissions globale du serveur
       {
@@ -38,6 +44,7 @@ module.exports = async (client, interaction) => {
     ],
   });
 
+  // On informe l'utilisateur de la création de son ticket
   await interaction.reply({
     content: `➕ Salon ticket crée dans ${channel}`,
     ephemeral: true,

@@ -2,7 +2,6 @@ const geminiRequest = require("../../utils/AI/geminiRequest");
 const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
-  if (interaction.guild.id !== "1418256830890770577") return;
   const urlRegex = /(https?|ftp|file):\/\/[^\s]+/gi;
   const suspisiousLinks = interaction.content.match(urlRegex);
   if (suspisiousLinks) {

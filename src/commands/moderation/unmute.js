@@ -14,7 +14,6 @@ module.exports = {
 
   // Description de la commande
   description: "Désactive la sanction mute",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [
@@ -34,16 +33,15 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interraction) => {
-    // on récupère le role mute
+    // On récupère le role Muted
     const rolesCollection = await interraction.guild.roles.fetch();
     const roles = Array.from(rolesCollection.values());
     const mutedRoles = roles.filter((role) => role.name === "Muted");
 
-    //on récupère le membre banni
-    const mutedMember = interraction.options.getUser("membre");
+    // On récupère le membre mute
     const guildMutedMember = interraction.options.getMember("membre");
 
-    // si il a le role on enleve
+    // Si l'utilisateur possède le role Muted alors on lui enleve
     try {
       if (guildMutedMember.roles.cache.has(mutedRoles[0].id)) {
         await guildMutedMember.roles.remove(mutedRoles[0]);
@@ -51,12 +49,15 @@ module.exports = {
     } catch {
       console.log("Un problème est survenu");
     }
-    // si il est mute temp on arrete
+
+    // Si l'utilisateur est tempmute alors on annule la sanction
     try {
       await guildMutedMember.timeout(null, "Annulation du mute avant la fin");
     } catch (error) {
       console.error(error);
     }
+
+    // On envoie un log de l'action dans le salon adéquat
     sendLog(
       interraction,
       "Membre Unmute",

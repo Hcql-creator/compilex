@@ -18,7 +18,7 @@ const {
 module.exports = {
   // Nom de la commande
   name: "setupgroupwork",
-  devOnly: true,
+  deleted: true,
 
   // Description de la commande
   description: "Créer le message interractif de création de groupe",
@@ -34,6 +34,7 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: (client, interraction) => {
+    // On créer notre embed
     const showcaseMessage = embedCreator(
       interraction,
       "#04b4d7",
@@ -44,6 +45,7 @@ module.exports = {
       false,
       false
     ).addFields(
+      // Définition des champs
       blankEmbedField(),
       embedField("Nombre de participants", "1 - illimité", true),
       embedField("Durée du salon", "Illimitée (fin du travail)", true),
@@ -53,21 +55,26 @@ module.exports = {
       ),
       blankEmbedField()
     );
+
+    // On créer notre ligne de composants
     const row = new ActionRowBuilder();
     row.addComponents(
+      // On défini nos boutons
       buttonCreator(
         "groupWorkStartButton",
         "Commencer",
         "⏲️",
         ButtonStyle.Success
-      ),
+      )
+      /*
       linkButtonCreator(
         "",
         "Comment ça marche",
         "https://notre-site-demo.vercel.app"
-      )
+      )*/
     );
 
+    // On envoie l'embed avec sa ligne de composants
     interraction.channel.send({
       embeds: [showcaseMessage],
       components: [row],

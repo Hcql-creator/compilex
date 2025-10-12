@@ -16,10 +16,18 @@ module.exports = async (client, interaction) => {
           (ch) => ch.type === ChannelType.GuildCategory && ch.name === "「 Travaux de groupe ✒️」"
         );
   const channelName = "travail-de-groupe";
+
+  // On récupère l'ID du salon actuel
   const currentChannelID = interaction.message.channelId;
+
+  // On récupère la catégorie parent de ce salon
   const guild = client.guilds.cache.get(interaction.guild.id);
   const parentCategory = await guild.channels.fetch(currentChannelID);
+
+  // ID de la catégorie parent
   const parentCategoryID = parentCategory.parentId;
+
+  // On créer un nouveau salon avec les permissions adéquates
   const channel = await interaction.guild.channels.create({
     name: channelName,
     type: 0,
@@ -44,7 +52,7 @@ module.exports = async (client, interaction) => {
     ],
   });
 
-  // Embed
+  // On créer notre embed interractif
   const groupWorkChannelEmbed = embedCreator(
     interaction,
     "#00863b",
@@ -52,6 +60,8 @@ module.exports = async (client, interaction) => {
     "Description du travail inconnue",
     "https://www.teachhub.com/wp-content/uploads/2020/09/Sept-9-Benefits-of-Group-Work_web.jpg"
   );
+
+  // Ajoute des champs
   groupWorkChannelEmbed.addFields(
     blankEmbedField(),
     embedField("Durée prévue", "Non-Spécifiée", true),
@@ -60,8 +70,11 @@ module.exports = async (client, interaction) => {
     blankEmbedField()
   );
 
+  // On créer 2 lignes de boutons (1 pour les boutons et une 2ème pour le dropdown)
   const row = new ActionRowBuilder();
   const row2 = new ActionRowBuilder();
+
+  // On ajoute nos boutons à notre première ligne
   row.addComponents(
     buttonCreator("groupWorkName", "Nom du Travail", "🏷️", ButtonStyle.Primary),
     buttonCreator(
@@ -85,17 +98,23 @@ module.exports = async (client, interaction) => {
     )
   );
 
-  // Menu participants
+  // On créer notre menu déroullant
   const menu = userMenuBuilder(
     "groupWorkUserSelectMenu",
     "Participants",
     1,
     10
   ).setDefaultUsers(interaction.user.id);
+
+  // On ajoute notre menu à la deuxième ligne de composants
   row2.addComponents(menu);
 
+  // On envoie le message interractif dans le nouveau salon
   channel.send({ embeds: [groupWorkChannelEmbed], components: [row, row2] });
-  interaction.reply(
-    `Ton salon de travail vient tout juste d'être créer -> <#${channel.id}>`
-  );
+
+  // On confirme à l'utilisateur que son salon à été créer et on lui indique son emplacement
+  interaction.reply({
+    content: `Ton salon de travail vient tout juste d'être créer -> <#${channel.id}>`,
+    ephemeral: true,
+  });
 };

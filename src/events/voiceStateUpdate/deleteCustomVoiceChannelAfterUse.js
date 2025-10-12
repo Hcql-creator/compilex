@@ -1,6 +1,12 @@
 module.exports = async (client, oldState, newState) => {
   // Channels a ne pas supprimer
-  const authorizedChannels = ["1422637363963760860", "1422653727512461493"];
+  const authorizedChannels = [
+    "1425919969337806869",
+    "1418266737094430813",
+    "1418497119928582194",
+    "1425920041739751535",
+    "1426938447003652137",
+  ];
 
   // Si l'user quite
   if (

@@ -21,7 +21,7 @@ module.exports = {
 
   // Paramètres de la commande
   options: [],
-  devOnly: true,
+  deleted: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.Administrator],
@@ -37,8 +37,7 @@ module.exports = {
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: (client, interraction) => {
-    const channelID = "1422464293470867506";
-    const channel = client.channels.fetch(channelID);
+    // On créer notre embed
     const ticketEmbed = embedCreator(
       interraction,
       "#ffA500",
@@ -49,7 +48,11 @@ module.exports = {
       false,
       false
     );
+
+    // On créer notre ligne de composants
     const row = new ActionRowBuilder();
+
+    // On ajoute notre bouton
     row.addComponents(
       buttonCreator(
         "ticketCreateButton",
@@ -58,6 +61,8 @@ module.exports = {
         ButtonStyle.Success
       )
     );
+
+    // On envoie notre embed avec sa ligne de composants
     interraction.channel.send({ embeds: [ticketEmbed], components: [row] });
   },
 };

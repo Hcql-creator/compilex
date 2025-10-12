@@ -17,17 +17,20 @@ module.exports = {
   // Permissions requises pour que le bot puisse éxécuter la commande
   botPermissions: [PermissionFlagsBits.Administrator],
 
-  devOnly: true,
-
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interaction) => {
     try {
+      // On défini l'url de la requête API
       const url = "https://meme-api.com/gimme/ProgrammerHumor";
 
+      // On récupère le résultat de la requête
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Erreur API: ${response.status}`);
 
+      // On rend les données exploitables
       const data = await response.json();
+
+      // On envoie un embed contenant le même, son titre et sa provenance
       await interaction.reply({
         embeds: [
           {

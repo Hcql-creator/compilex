@@ -1,5 +1,4 @@
 module.exports = (client, interaction) => {
-  if (interaction.guild.id !== "1418256830890770577") return;
   const responses = [
     "feur!!!",
     "fure!!!",

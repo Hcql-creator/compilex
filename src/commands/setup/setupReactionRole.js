@@ -1,3 +1,5 @@
+const embedCreator = require("../../utils/embeds/embedCreator");
+
 const {
   // Si la commande requiert des paramètres
 
@@ -15,7 +17,7 @@ module.exports = {
 
   // Paramètres de la commande
   options: [],
-  devOnly: true,
+  deleted: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.Administrator],
@@ -27,10 +29,27 @@ module.exports = {
   callback: async (client, interraction) => {
     let response;
     try {
-      const message = await interraction.channel.send("Message Reaction Role");
-      await message.react("❌");
-      await message.react("⚠️");
-      await message.react("✅");
+      // On créer notre embed
+      const embed = embedCreator(
+        interraction,
+        "#d6aa3a",
+        "Choisissez votre groupe",
+        "Choisissez votre groupe (A, B, C ou D), celui-ci servira à vous donner accès à votre groupe de classe et permettra aux délégués de passer des messages !"
+      );
+
+      // On envoie notre message
+      const message = await interraction.channel.send({
+        content: "",
+        embeds: [embed],
+      });
+
+      // On ajoute nos réactions
+      await message.react("🅰️");
+      await message.react("🅱️");
+      await message.react("©");
+      await message.react("🎲");
+
+      // On envoie l'id du message pour config l'action lors de la réaction d'un utilisateur
       response = `Reaction role créer avec succès, message.id = ${message.id}`;
     } catch (error) {
       console.error("Erreur:", error);

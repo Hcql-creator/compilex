@@ -1,8 +1,8 @@
 const { PermissionFlagsBits } = require("discord.js");
 
 module.exports = async (client, oldState, newState) => {
-  const createCustomVoiceChannelID = "1422637363963760860";
-  const channelParentID = "1421419168074563684";
+  const createCustomVoiceChannelID = "1426938447003652137";
+  const channelParentID = "1418254886977405102";
   if (
     (!oldState.channelId && newState.channelId) ||
     (oldState.channelId && newState.channelId)
