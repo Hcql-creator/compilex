@@ -13,7 +13,6 @@ module.exports = {
   name: "unlock",
   // Description de la commande
   description: "Deverouille un salon (personne ne peut écrire)",
-  devOnly: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.ManageChannels],

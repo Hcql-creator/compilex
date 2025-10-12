@@ -48,7 +48,6 @@ module.exports = {
   ],
   permissionsRequired: [PermissionFlagsBits.BanMembers],
   botPermissions: [PermissionFlagsBits.BanMembers],
-  devOnly: true,
   callback: async (client, interaction) => {
     // On récupère l'utilisateur à bannir
     const bannedUser = interaction.options.getUser("utilisateur");

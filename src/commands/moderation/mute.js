@@ -14,7 +14,6 @@ const sendLog = require("../../utils/sendLog");
 module.exports = {
   name: "mute",
   description: "Mute le membre spécifié pour une durée indéterminée",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

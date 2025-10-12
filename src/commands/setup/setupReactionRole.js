@@ -17,7 +17,7 @@ module.exports = {
 
   // Paramètres de la commande
   options: [],
-  devOnly: true,
+  deleted: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.Administrator],

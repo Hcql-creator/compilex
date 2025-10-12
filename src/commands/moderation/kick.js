@@ -17,7 +17,6 @@ module.exports = {
 
   // Description de la commande
   description: "Permet d'expulser un membre",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

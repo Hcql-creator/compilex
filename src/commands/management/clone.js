@@ -14,7 +14,6 @@ module.exports = {
 
   // Description de la commande
   description: "Re-créer le salon à l'identique",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

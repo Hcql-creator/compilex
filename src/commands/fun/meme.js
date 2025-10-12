@@ -17,8 +17,6 @@ module.exports = {
   // Permissions requises pour que le bot puisse éxécuter la commande
   botPermissions: [PermissionFlagsBits.Administrator],
 
-  devOnly: true,
-
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: async (client, interaction) => {
     try {

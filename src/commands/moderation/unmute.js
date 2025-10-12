@@ -14,7 +14,6 @@ module.exports = {
 
   // Description de la commande
   description: "Désactive la sanction mute",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

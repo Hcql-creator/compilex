@@ -17,7 +17,6 @@ module.exports = {
 
   // Description de la commande
   description: "Mute le membre pour la durée spécifiée",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

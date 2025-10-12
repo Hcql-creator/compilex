@@ -14,7 +14,6 @@ module.exports = {
 
   // Description de la commande
   description: "Ferme un salon",
-  devOnly: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [

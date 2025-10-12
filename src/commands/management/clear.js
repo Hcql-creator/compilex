@@ -14,7 +14,6 @@ module.exports = {
 
   // Description de la commande
   description: "Efface les messages",
-  devOnly: true,
 
   // Paramètres de la commande
   options: [

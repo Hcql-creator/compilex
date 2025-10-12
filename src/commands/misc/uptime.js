@@ -27,7 +27,6 @@ module.exports = {
   testOnly: false,
 
   // Optionnel: Active la commande uniquement pour les développeurs ajoutés dans config.json
-  devOnly: true,
 
   // Action de la commande sous forme de fonction (prenant toujours ces 2 paramètres)
   callback: (client, interraction) => {

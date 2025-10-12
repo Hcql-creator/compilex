@@ -14,7 +14,6 @@ module.exports = {
   name: "lock",
   // Description de la commande
   description: "Verrouiller un salon (personne ne peut écrire)",
-  devOnly: true,
 
   // Permissions requises pour l'utilisateur éxécutant la commande
   permissionsRequired: [PermissionFlagsBits.ManageChannels],

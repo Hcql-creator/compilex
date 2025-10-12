@@ -27,7 +27,6 @@ module.exports = {
     PermissionFlagsBits.ManageRoles,
     PermissionFlagsBits.ModerateMembers,
   ],
-  devOnly: true,
 
   callback: async (client, interaction) => {
     // On récupère le membre à warn

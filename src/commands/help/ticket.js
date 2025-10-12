@@ -9,7 +9,6 @@ module.exports = {
   name: "ticket",
   description: "Créer un ticket privé pour répondre à vos problèmes",
   botPermissions: [PermissionFlagsBits.Administrator],
-  devOnly: true,
   callback: async (client, interraction) => {
     // On récupère la catégorie contenant les Tickets
     const ticketCategoryID = "1418263721582526655";
