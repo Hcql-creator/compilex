@@ -11,6 +11,7 @@ module.exports = async (client, interaction) => {
     /(discord\.gg\/[A-Za-z0-9]+)/i,
     /(free|nitro|gift|steam).*(discord|nitro|steam|gift)/i,
     /(.)\1{5,}/i,
+    /\b(juif|Auchwitz|hitler|arabe|viol?|viol|buté|mort|tué|violé|antisémite?|antisioniste?|lep|islam|palestine|israël|nique|g(é|e)nocide|)\b/i,
   ];
 
   let geminiResponse = "";
