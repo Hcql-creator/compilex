@@ -57,9 +57,10 @@ module.exports = async (client, interaction) => {
       }
     }
     await interaction.message.edit({ embeds: [newEmbed] });
-    await interaction.editReply(
-      "Liste des utilisateurs accédant au salon mise à jour !"
-    );
+    await interaction.editReply({
+      content: "Liste des utilisateurs accédant au salon mise à jour !",
+      ephemeral: true,
+    });
   } catch (error) {
     console.log("Erreur lors de la modification des permission", error);
   }

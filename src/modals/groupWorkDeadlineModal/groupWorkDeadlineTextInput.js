@@ -14,7 +14,8 @@ module.exports = async (client, interaction) => {
   });
   newEmbed.setFields(updatedEmbedFields);
   await interaction.message.edit({ embeds: [newEmbed] });
-  interaction.reply(
-    "Date de rendu / présentation (deadline) du travail modifiée."
-  );
+  interaction.reply({
+    content: "Date de rendu / présentation (deadline) du travail modifiée.",
+    ephemeral: true,
+  });
 };
