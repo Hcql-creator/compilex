@@ -27,6 +27,13 @@ module.exports = async (client, interaction) => {
       break;
     }
   }
+  // On log l'action dans le salon dédié
+      sendLog(
+        interaction,
+        "Auto-Modération",
+        "Red",
+        `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`
+      );
   console.log("Intra gemini response:", geminiResponse);
   if (geminiResponse === "true" || geminiResponse.includes("true")) {
     console.log("Deleted Message");
