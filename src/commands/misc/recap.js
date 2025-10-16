@@ -88,7 +88,7 @@ module.exports = {
       geminiResponse = await geminiRequest(stringOutput, question, true);
 
       // On renvoie la réponse à l'utilisateur
-      interraction.editReply(geminiResponse);
+      interraction.editReply({ content: geminiResponse, ephemeral: true });
     });
   },
 };

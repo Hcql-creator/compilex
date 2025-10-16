@@ -14,5 +14,8 @@ module.exports = async (client, interaction) => {
   });
   newEmbed.setFields(updatedEmbedFields);
   await interaction.message.edit({ embeds: [newEmbed] });
-  interaction.reply("Durée estimée du travail modifiée.");
+  interaction.reply({
+    content: "Durée estimée du travail modifiée.",
+    ephemeral: true,
+  });
 };

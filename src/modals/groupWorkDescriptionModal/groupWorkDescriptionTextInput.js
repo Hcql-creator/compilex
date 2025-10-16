@@ -9,5 +9,8 @@ module.exports = async (client, interaction) => {
   const newEmbed =
     EmbedBuilder.from(embed).setDescription(groupWorkDescription);
   await interaction.message.edit({ embeds: [newEmbed] });
-  interaction.reply("Description du travail modifiée.");
+  interaction.reply({
+    content: "Description du travail modifiée.",
+    ephemeral: true,
+  });
 };

@@ -6,6 +6,9 @@ module.exports = async (client, interaction) => {
     // On ferme le salon
     await channel.delete();
   } catch {
-    interaction.reply("❌ | Erreur lors de la fermeture du salon");
+    interaction.reply({
+      content: "❌ | Erreur lors de la fermeture du salon",
+      ephemeral: true,
+    });
   }
 };

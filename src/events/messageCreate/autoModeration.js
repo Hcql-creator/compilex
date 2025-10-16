@@ -3,7 +3,7 @@ const sendLog = require("../../utils/sendLog");
 
 module.exports = async (client, interaction) => {
   const regexList = [
-    /\b(putain|fdp|sale|enculé|nique ta m(ère|ere)|pd|tafiole|palestine|israel|israël|gouine|chienne|fdp|tg|ferme|connard|conard|saloppe|salope|pute|nazi|negger)\b/i,
+    /\b(putain|fdp|sale|enculé|zizi|bite|teub|hitler|negre|nègre|negro|négro|nez|vive|free|mort|trisomique|juif|arabe|palestine|israel|israël|génocide|genocide|gnocide|nique ta m(ère|ere)|pd|tafiole|palestine|israel|israël|gouine|chienne|fdp|tg|ferme|connard|conard|saloppe|salope|pute|nazi|negger)\b/i,
     /\b(fuck|shit|bitch|bastard|asshole|dick|cunt|slut|whore)\b/i,
     /\b(nigg(a|er)s?|youpin|raton|bougnoule|chinetoque|bicot|fag(got)?|butt|suck|pornhub)\b/i,
     /\b(porno?|xnxx|xvideos|redtube|onlyfans?|camgirl|sex|cum|milf|anal|bdsm|suce|fe(ll | l)ation|bitch)\b/i,

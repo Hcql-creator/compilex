@@ -7,6 +7,6 @@ module.exports = async (client, member) => {
   try {
     await channel.setName(newName);
   } catch (err) {
-    console.error('Erreur en renommant le salon:', err);
-  };
-}
+    console.error("Erreur en renommant le salon:", err);
+  }
+};
