@@ -17,23 +17,22 @@ module.exports = async (client, interaction) => {
   let geminiResponse = "";
   for (const regex of regexList) {
     if (interaction.content.toLowerCase().match(regex)) {
-      const userInfos = `${
-        interaction.author.globalName ??
+      const userInfos = `${interaction.author.globalName ??
         interaction.author.username ??
         interaction.author.tag
-      } (${interaction.author.id}): ${interaction.content}`;
+        } (${interaction.author.id}): ${interaction.content}`;
       console.log("Message sent to GEMINI");
       geminiResponse = await geminiRequest(userInfos, "", false, false, true);
       break;
     }
   }
   // On log l'action dans le salon dédié
-      sendLog(
-        interaction,
-        "Auto-Modération",
-        "Red",
-        `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`
-      );
+  sendLog(
+    interaction,
+    "Auto-Modération",
+    "Red",
+    `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`,
+  );
   console.log("Intra gemini response:", geminiResponse);
   if (geminiResponse === "true" || geminiResponse.includes("true")) {
     console.log("Deleted Message");
