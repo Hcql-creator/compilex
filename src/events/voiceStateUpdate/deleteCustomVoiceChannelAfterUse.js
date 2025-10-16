@@ -6,6 +6,7 @@ module.exports = async (client, oldState, newState) => {
     "1418497119928582194",
     "1425920041739751535",
     "1426938447003652137",
+    "1428344498060263504",
   ];
 
   // Si l'user quite
