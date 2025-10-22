@@ -11,30 +11,34 @@ module.exports = async (client, interaction) => {
     /(discord\.gg\/[A-Za-z0-9]+)/i,
     /(free|nitro|gift|steam).*(discord|nitro|steam|gift)/i,
     /(.)\1{5,}/i,
-    /\b(juif|Auchwitz|hitler|arabe|viol?|viol|buté|mort|tué|violé|antisémite?|antisioniste?|lep|islam|palestine|israël|nique|g(é|e)nocide|)\b/i,
+    /\b(juif|Auchwitz|hitler|arabe|viol?|viol|buté|mort|tué|violé|antisémite?|antisioniste?|lep|islam|palestine|israël|nique|g(é|e)nocide)\b/i,
   ];
+
+  if (interaction.author.bot) return;
 
   let geminiResponse = "";
   for (const regex of regexList) {
     if (interaction.content.toLowerCase().match(regex)) {
-      const userInfos = `${interaction.author.globalName ??
+      const userInfos = `${
+        interaction.author.globalName ??
         interaction.author.username ??
         interaction.author.tag
-        } (${interaction.author.id}): ${interaction.content}`;
+      } (${interaction.author.id}): ${interaction.content}`;
       console.log("Message sent to GEMINI");
       geminiResponse = await geminiRequest(userInfos, "", false, false, true);
       break;
     }
   }
-  // On log l'action dans le salon dédié
-  sendLog(
-    interaction,
-    "Auto-Modération",
-    "Red",
-    `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`,
-  );
+
   console.log("Intra gemini response:", geminiResponse);
   if (geminiResponse === "true" || geminiResponse.includes("true")) {
+    // On log l'action dans le salon dédié
+    sendLog(
+      interaction,
+      "Auto-Modération",
+      "Red",
+      `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`
+    );
     console.log("Deleted Message");
     await interaction.delete();
     interaction.channel.send(
