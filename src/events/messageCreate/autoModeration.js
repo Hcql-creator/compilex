@@ -11,7 +11,7 @@ module.exports = async (client, interaction) => {
     /(discord\.gg\/[A-Za-z0-9]+)/i,
     /(free|nitro|gift|steam).*(discord|nitro|steam|gift)/i,
     /(.)\1{5,}/i,
-    /\b(juif|Auchwitz|hitler|arabe|viol?|viol|buté|mort|tué|violé|antisémite?|antisioniste?|lep|islam|palestine|israël|nique|g(é|e)nocide|)\b/i,
+    /\b(juif|Auchwitz|hitler|arabe|viol?|viol|buté|mort|tué|violé|antisémite?|antisioniste?|lep|islam|palestine|israël|nique|g(é|e)nocide)\b/i,
   ];
 
   let geminiResponse = "";
@@ -26,15 +26,15 @@ module.exports = async (client, interaction) => {
       break;
     }
   }
-  // On log l'action dans le salon dédié
-  sendLog(
-    interaction,
-    "Auto-Modération",
-    "Red",
-    `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`,
-  );
-  console.log("Intra gemini response:", geminiResponse);
+
   if (geminiResponse === "true" || geminiResponse.includes("true")) {
+    sendLog(
+      interaction,
+      "Auto-Modération",
+      "Red",
+      `Le message de ${interaction.author.id} a été signalé ! \nMessage : ${interaction.content}`,
+    );
+    console.log("Intra gemini response:", geminiResponse);
     console.log("Deleted Message");
     await interaction.delete();
     interaction.channel.send(
