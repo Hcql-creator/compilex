@@ -16,7 +16,7 @@ const {
 module.exports = {
   // Nom de la commande
   name: "note",
-  deleted: true,
+  deleted: false,
 
   // Description de la commande
   description: "aa",
@@ -40,7 +40,7 @@ module.exports = {
       interraction,
       "#3f8ef6",
       "Nouvelle Note Disponible",
-      "La note du DS2 (examen papier) est disponible.\n\n **Matière:** R1.01\n",
+      'La note de la présentation "Low Tech" (présentation orale) est disponible.\n\n **Matière:** R1.10 - Anglais\n',
       "https://www.digischool.fr/articles/_next/image/?url=https%3A%2F%2Fcms.digischool.fr%2Fwp-content%2Fuploads%2F2023%2F04%2FAdobeStock_26000584-1-min-scaled.jpeg&w=1920&q=75",
       "",
       false,
@@ -49,10 +49,10 @@ module.exports = {
 
     embed.addFields(
       blankEmbedField(),
-      embedField("Note Min.", "01.00", true),
-      embedField("Moyenne", "09.94", true),
-      embedField("Note Max.", "19.00", true),
-      embedField("Coefficient", "35"),
+      embedField("Note Min.", "10.00", true),
+      embedField("Moyenne", "12.94", true),
+      embedField("Note Max.", "15.50", true),
+      embedField("Coefficient", "1.5"),
       blankEmbedField()
     );
 
